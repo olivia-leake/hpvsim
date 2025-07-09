@@ -25,7 +25,7 @@ class Sim(hpb.BaseSim):
 
     def __init__(self, pars=None, datafile=None, label=None,
                  popfile=None, popdict=None, people=None, version=None, hiv_datafile=None, art_datafile=None,
-                 **kwargs):
+                 **kwargs): # None makes the argument optional
 
         # Set attributes
         self.label         = label    # The label/name of the simulation

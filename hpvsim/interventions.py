@@ -436,6 +436,7 @@ class dynamic_pars(Intervention):
 
         # Do standard initialization
         super().__init__(**kwargs) # Initialize the Intervention object
+        # super allowss the fuction to inherit from all parent classes for the class dynamic_pars
 
         # Handle the rest of the initialization
         subkeys = ['timepoints', 'vals']
