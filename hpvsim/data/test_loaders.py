@@ -10,3 +10,6 @@ at = ld.get_age_distribution_over_time(**kw)
 tp = ld.get_total_pop(**kw)
 dr = ld.get_death_rates(**kw)
 br = ld.get_birth_rates(**kw)
+
+print(kw)
+print(ad)
