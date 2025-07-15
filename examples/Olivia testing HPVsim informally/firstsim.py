@@ -9,7 +9,7 @@ Created on Wed Jul  9 09:42:48 2025
 import hpvsim as hpv
 
 
-pars = dict(
+pars1 = dict(
     location = 'tanzania', # Use population characteristics for Japan
     n_agents = 10e3, # Have 50,000 people total in the population (NOTE: actual tanzanian pop in 1980 was 19.2million, so 1 agent represents about 380 people)
     start = 1980, # Start the simulation in 1980
@@ -19,7 +19,35 @@ pars = dict(
 )
 
 
-sim = hpv.Sim() 
+sim = hpv.Sim(pars1) 
+
+# Does this only work because pars is called pars? N0
+# What if I seperate into two different dictionaries?
+
+pars2 = dict(
+    location = 'tanzania', # Use population characteristics for Japan
+    n_agents = 10e3 # Have 50,000 people total in the population (NOTE: actual tanzanian pop in 1980 was 19.2million, so 1 agent represents about 380 people)
+    )
+    
+pars3= dict(
+    start = 1980, # Start the simulation in 1980
+    n_years = 50, # Run the simulation for 50 years
+    burnin = 10, # Discard the first 20 years as burnin period
+    verbose = 0, # Do not print any output
+)
+
+combined_pars = {**pars2, **pars3}
+
+sim2 = hpv.Sim(combined_pars) 
+sim2.run()
+
+
+
+
+
+
+
+
 sim.run()
 fig = sim.plot()
 
@@ -51,4 +79,6 @@ print(help(hpv.data))
 # One of the files is this one and contains 3 matches
 # Another of the files is hpv_t4.py which contains 2 matches
 # The final is tut_people.ipynb which contains one match
+
+
 
