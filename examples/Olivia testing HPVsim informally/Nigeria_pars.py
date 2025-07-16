@@ -6,6 +6,8 @@ Created on Tue Jul 15 09:40:03 2025
 @author: olivialeake
 """
 
+### LOOK AT nigeria_calibrated_sim_new FOR THE CORRECT WAY TO DO THIS
+
 import hpvsim as hpv
 
 # simulation pars

@@ -65,20 +65,23 @@ layer_pars = dict(
     
 
 
+# %% DIDN'T WORK SO COMMENTED OUT
+
+
 # Genotype parameters from Fabian claibration
 
-geno_pars = {
-        'beta': 0.3,  # temporary until get Fabian calib
-        'genotype_pars': {
-            'hpv16': {
-                'dur_precin': {'par1': 6},
-                'cin_fn': {'k': 0.3},
-            },
-            'hpv18': {
-                'dur_precin': {'par2': 5},
-            },
-        },
-    }
+# geno_pars = {
+#         'beta': 0.3,  # temporary until get Fabian calib
+#         'genotype_pars': {
+#             'hpv16': {
+#                 'dur_precin': {'par1': 6},
+#                 'cin_fn': {'k': 0.3},
+#             },
+#             'hpv18': {
+#                 'dur_precin': {'par2': 5},
+#             },
+#         },
+#     }
 
 
 
@@ -90,6 +93,9 @@ geno_pars = {
 #     pars['hpv16']['cin_fn']['k'] = 0.3  # temporary until get Fabian calib
 #     )
 
+# %%
+
+
 # Network paramters from Fabian calibration
 net_pars = {
     'f_cross_layer' : 0.05, # temporary until get Fabian calib
@@ -97,7 +103,7 @@ net_pars = {
     }
 
 # Combine the dictionaries
-Nigeria_pars = {**location_pars, **layer_pars, **sim_pars, **geno_pars, **net_pars}
+Nigeria_pars = {**location_pars, **layer_pars, **sim_pars, **net_pars}
 
 Nigeria_sim = hpv.Sim(Nigeria_pars, label = 'Nigeria sim', rand_seed = 2)
 # Should change the random seed if want to produce different sims
@@ -107,7 +113,7 @@ Nigeria_sim = hpv.Sim(Nigeria_pars, label = 'Nigeria sim', rand_seed = 2)
 
 # Has beta = 0.3 (default was 0.25 so know it has taken my pars)
 # m_cross_layer has also been updated
-# genotype parameters have also been updated ! So this is correct !
+
 
 
 ## Default hpv genotype parameters
