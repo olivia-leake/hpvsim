@@ -16,16 +16,12 @@ sim_pars = dict(
     burnin = 25, # Discard the first 20 years as burnin period
     dt = 0.25,
     verbose = 0, # Do not print any output
-    rand_seed = 2 # Should change the random seed if want to produce different sims
     )
 
 location_pars = dict(
     location = 'Nigeria',
-    network = 'default',     # Use layered network rather than random
-    beta = 0.3 # Note that beta is NOT a genotype parameter, but is an epidemiological param
+    network = 'default'     # Use layered network rather than random
     )
-
-# %%
 
 
 # Parameters specified by layer
@@ -67,32 +63,9 @@ layer_pars = dict(
     # )
     # layer_defaults['default']['mixing'], layer_defaults['default']['layer_probs'] = get_mixing('default')
     
-# %% Try running code without changing genotype pars
-
-# Combine the dictionaries
-Nigeria_pars = {**location_pars, **layer_pars, **sim_pars}
-
-Nigeria_sim = hpv.Sim(Nigeria_pars, label = 'Nigeria sim') # This is an instance of the class Sim
-
-Nigeria_sim.run()
-first_Nigeria_plot = Nigeria_sim.plot()
-
-hpv.savefig('/Users/olivialeake/Library/CloudStorage/OneDrive-Nexus365/Part B/BSP project/HPV Project/hpvsim/examples/Olivia testing HPVsim informally/First_Nigeria_plot.png',
-            fig = first_Nigeria_plot)
-
-# %%
-
-#======================= DON'T USE THIS, INSTEAD SEE change_geon_pars.py !!!
-
-
 
 
 # Genotype parameters from Fabian claibration
-
-
-
-
-
 
 geno_pars = {
         'beta': 0.3,  # temporary until get Fabian calib
@@ -123,99 +96,18 @@ net_pars = {
     'm_cross_layer' : 0.15 # temporary until get Fabian calib
     }
 
+# Combine the dictionaries
+Nigeria_pars = {**location_pars, **layer_pars, **sim_pars, **geno_pars, **net_pars}
 
-Nigeria_pars_updated = {**location_pars, **layer_pars, **sim_pars, **geno_pars, **net_pars}
+Nigeria_sim = hpv.Sim(Nigeria_pars, label = 'Nigeria sim', rand_seed = 2)
+# Should change the random seed if want to produce different sims
 
-Nigeria_sim = hpv.Sim(pars = Nigeria_pars_updated, label = 'Nigeria sim updated')
 # Check got correct parameters by inspecting
 # print(Nigeria_sim.pars)
 
 # Has beta = 0.3 (default was 0.25 so know it has taken my pars)
 # m_cross_layer has also been updated
 # genotype parameters have also been updated ! So this is correct !
-
-## Fine, but does it run?
-Nigeria_sim.run() # Nope it doesn't run. Lets check if it's just because of **geno_pars
-
-
-# %%
-
-
-
-
-# TEST
-Nigeria_pars_test = {**location_pars, **layer_pars, **sim_pars, **net_pars}
-Nigeria_test_sim = hpv.Sim(Nigeria_pars_test, label = 'Nigeria test')
-
-Nigeria_test_sim.run()
-# Yes, this runs fine. So it is just the genotype pars causing the error
-
-
-# %%
-
-
-
-
-Nigeria_pars_test = {**location_pars, **layer_pars, **sim_pars, **net_pars}
-Nigeria_test_sim2 = hpv.Sim(Nigeria_pars_test, label = 'Nigeria test')
-
-Nigeria_test_sim2.pars['genotype_pars']['hpv16']['dur_precin']['par1'] = 6
-
-# %%
-
-# geno_pars = hpv.parameters.get_genotype_pars(genotype= ['hpv16', 'hpv18', 'hi5']) # gets the full default dictionary for all genotypes
-geno_pars = hpv.parameters.get_genotype_pars(default= True)
-
-# Change specific values within that dictionary
-
-geno_pars.hpv16.dur_precin['par1'] = 6
-geno_pars.hpv16.cin_fn['k'] = 0.28
-geno_pars.hpv18.dur_precin['par2'] = 5
-
-
-# You can't merge normal dicitonaries and sc.obdict like normal
-
-# Now add geno_pars to pars, and create the sim
-Nigeria_pars = {**location_pars, **layer_pars, **sim_pars, **net_pars}
-
-# Now modify the dictionary to include geno_pars
-Nigeria_pars['genotype_pars'] = geno_pars
-
-nig_sim = hpv.Sim(Nigeria_pars, label = 'Nigeria', rand_seed = 2)
-
-nig_sim.run()
-## This didn't work as by default the sim only includes genotypes 16, 18 and hi5
-## But when getting the full dictionary you 
-
-
-parameters.get_genotype_pars(genotype = )
-
-
-
-
-# %%
-
-
-
-
-
-Nigeria_pars_updated = {**location_pars, **layer_pars, **sim_pars, **net_pars}
-
-Nigeria_pars_updated['genotype_pars']['hpv16']['dur_precin']['par1'] = 6
-Nigeria_pars_updated['genotype_pars']['hpv16']['cin_fn']['k'] = 0.28
-Nigeria_pars_updated['genotype_pars']['hpv18']['dur_precin']['par2'] = 5
-
-
-Nigeria_sim.pars['genotype_pars']['hpv16']['dur_precin']['par1'] = 6
-Nigeria_pars_updated['genotype_pars']['hpv16']['cin_fn']['k'] = 0.28
-Nigeria_pars_updated['genotype_pars']['hpv18']['dur_precin']['par2'] = 5
-
-
-Nigeria_sim = hpv.Sim(pars = Nigeria_pars_updated, 
-                      pars['genotype_pars']['hpv16']['dur_precin']['par1'] = 6
-                      label = 'Nigeria sim updated')
-
-
 
 
 ## Default hpv genotype parameters
@@ -247,4 +139,10 @@ Nigeria_sim = hpv.Sim(pars = Nigeria_pars_updated,
 # pars['m_cross_layer']   = 0.30  # Proportion of males who have concurrent cross-layer relationships - by layer
 
 
+# %% Running the sim
 
+Nigeria_sim.run()
+first_Nigeria_plot = Nigeria_sim.plot()
+
+hpv.savefig('/Users/olivialeake/Library/CloudStorage/OneDrive-Nexus365/Part B/BSP project/HPV Project/hpvsim/examples/Olivia testing HPVsim informally/First_Nigeria_plot.png',
+            fig = first_Nigeria_plot)
