@@ -50,10 +50,11 @@ new_sim = sc.dcp(orig_sim) # dcp is a sciris module which creates a fully indepe
 new_sim['label'] ='vax'
 new_sim.label ='vax'
 
+new_sim['interventions'] =vx
+new_sim.interventions =vx
 
 
-
-
+print(new_sim.pars)
 
 
 
