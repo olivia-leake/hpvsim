@@ -5,6 +5,9 @@ Created on Wed Jul 16 12:49:48 2025
 
 @author: olivialeake
 """
+## Didn't like have to make a deep copy so don't use this
+## Created a Nigeria sim function instead
+
 
 ## Need to access the simulation made in Nigeria_screening
 import sys
