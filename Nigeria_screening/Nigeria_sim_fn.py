@@ -18,10 +18,10 @@ def make_nigeria_sim(interventions=None, rand_seed=None, **kwargs):
 
     # simulation pars
     sim_pars = dict(
-        n_agents = 10e3, # Have 50,000 people total in the population (NOTE: actual tanzanian pop in 1980 was 19.2million, so 1 agent represents about 380 people)
-        start = 1990, # Start the simulation in 1980
-        end = 2050,
-        burnin = 25, # Discard the first 20 years as burnin period
+        n_agents = 10e3,
+        start = 1990, # Start the simulation in 1990
+        end = 2050, # End the simulation in 2050
+        burnin = 25, # Discard the first 25 years as burnin period
         dt = 0.25,
         verbose = 0 # Do not print any output
         )

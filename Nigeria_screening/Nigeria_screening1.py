@@ -81,9 +81,12 @@ screen_sim.run()
 screen_sim.plot()
 
 
+
+
 sim1.initialize(reset= True)
 sim2.initialize(reset= True)
 screen_sim.initialize(reset=True)
+# I'm getting an error here. Solution is to check tutorial 5 to see if it includes nany errors
 
 
 compare_sims = hpv.MultiSim(([sim1,sim2,screen_sim]))
