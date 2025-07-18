@@ -19,17 +19,28 @@ from Nigeria_screening.Nigeria_sim_fn import make_nigeria_sim
 
 
 
-def add_screening(age_range, label,vax = True, start_year=2026, **kwargs):
+def add_screening(age_range, label, vax=True, start_year=2026, interventions=None, **kwargs): 
     #Start year is 2026 by default
     
     '''
     Create a new sim with a routine screening strategy
+    Vaccination added in Oct 2023 is handled by make_nigeria_sim via vax=True/False
     '''
     
-    # First add in the vaccination introduced in Oct 2023 to 9-14 year olds
-    if vax == True:
-        vx = hpv.routine_vx(prob=0.9, start_year = 2024, age_range=[9,14], product='quadrivalent')
-    else: vx = []
+    if interventions is None:
+        interventions = []
+        
+    # Add vaccinatoin if requested:
+    if vax==True:    
+        vx = hpv.routine_vx(prob=0.9, start_year=2024, age_range=[9,14], product='quadrivalent')
+        interventions = [vx] + interventions 
+    
+    # Removed this as have let the make_nigeria_sim function handle vaccinations instead
+    
+    # # First add in the vaccination introduced in Oct 2023 to 9-14 year olds
+    # if vax == True:
+    #     vx = hpv.routine_vx(prob=0.9, start_year = 2024, age_range=[9,14], product='quadrivalent')
+    # else: vx = []
     
     
     # Defaults
@@ -68,24 +79,43 @@ def add_screening(age_range, label,vax = True, start_year=2026, **kwargs):
     
     
     ## Apply it to the sim
-    sim = make_nigeria_sim(interventions = vx + [screen, triage, assign_tx, ablation, excision], label = label, **kwargs)
+    sim = make_nigeria_sim(interventions = interventions + [screen, triage, assign_tx, ablation, excision], label = label, **kwargs)
     # If vax = False, then vx =[], so not included in interventions
     # If vax=True, then vx = an intevention, is concatenated with the other interventions
     
     return sim
 
+# %%
 
-## Think funs fine
-# test_fn= add_screening(age_range=[25,64], label ='test')
-# test_fn.run()
-# test_fn.plot()
+## Not sure if Oct 2023 vax being handled okay
+## Not sure if you can iclude your own inventions on top of this screening strategy
+
+
+## Think runs fine
+test_fn= add_screening(age_range=[25,64], label ='23 vax')
+test_fn.run()
+test_fn.plot()
 
 # Excluding the vax works fine
-# test_fn2= add_screening(age_range=[25,64], label ='test', vax=False)
-# test_fn2.run()
-# test_fn2.plot()
+test_fn2= add_screening(age_range=[25,64], label ='no 23 vax', vax=False)
+test_fn2.run()
+test_fn2.plot()
 
 
+# Compare vacx vs no vax
+comp_vx = hpv.MultiSim(([test_fn, test_fn2]))
+comp_vx.plot()
+# Yes looks like the vaccination is being removed properly
+# Doesn't change much but this is probably because the screening strategy is doing a lot
 
 
+# Lets check what happens if we only start the screening streategy in 2040
+test_fn3= add_screening(age_range=[25,64], label ='23 vax', start_year=2040)
+test_fn3.run()
+test_fn4= add_screening(age_range=[25,64], label ='no 23 vax', start_year=2040, vax=False)
+test_fn4.run()
 
+comp_vx2 = hpv.MultiSim(([test_fn3, test_fn4]))
+comp_vx2.plot()
+
+## The screening strategy looks like it's doing a lot !!
