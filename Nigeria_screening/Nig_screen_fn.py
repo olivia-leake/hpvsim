@@ -18,6 +18,8 @@ import hpvsim as hpv
 
 from Nigeria_screening.Nigeria_sim_fn import make_nigeria_sim
 
+# %%
+
 
 
 def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interventions=None, **kwargs): 
@@ -31,11 +33,11 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
     if interventions is None:
         interventions = []
         
-    # Add vaccinatoin if requested:
-    if vax==True:    
-        vx = hpv.routine_vx(prob=0.9, start_year=2024, age_range=[9,14], product='quadrivalent')
-        interventions = [vx] + interventions 
-    # Vaccination is being applied every year by default
+    # # Add vaccinatoin if requested:
+    # if vax==True:    
+    #     vx = hpv.routine_vx(prob=0.9, start_year=2024, age_range=[9,14], product='quadrivalent')
+    #     interventions = [vx] + interventions 
+    # # Vaccination is being applied every year by default
     
     
     
@@ -83,7 +85,7 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
     
     
     ## Apply it to the sim
-    sim = make_nigeria_sim(interventions = interventions + [screen, triage, assign_tx, ablation, excision], label = label, **kwargs)
+    sim = make_nigeria_sim(interventions = interventions + [screen, triage, assign_tx, ablation, excision], vax=vax, label = label, **kwargs)
     # If vax = False, then vx =[], so not included in interventions
     # If vax=True, then vx = an intevention, is concatenated with the other interventions
     
@@ -95,49 +97,82 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
 ## Not sure if you can iclude your own inventions on top of this screening strategy
 
 
-## Think runs fine
-test_fn= add_screening(age_range=[25,64], label ='23 vax')
-test_fn.run()
-test_fn.plot()
+# ## Think runs fine
+# test_fn= add_screening(age_range=[25,64], label ='23 vax')
+# test_fn.run()
+# test_fn.plot()
 
-# Excluding the vax works fine|
-test_fn2= add_screening(age_range=[25,64], label ='no 23 vax', vax=False)
-test_fn2.run()
-test_fn2.plot()
+# # Excluding the vax works fine|
+# test_fn2= add_screening(age_range=[25,64], label ='no 23 vax', vax=False)
+# test_fn2.run()
+# test_fn2.plot()
 
 
-# Compare vacx vs no vax
-comp_vx = hpv.MultiSim(([test_fn, test_fn2]))
-comp_vx.plot()
+# # Compare vacx vs no vax
+# comp_vx = hpv.MultiSim(([test_fn, test_fn2]))
+# comp_vx.plot()
 # Yes looks like the vaccination is being removed properly
-# Doesn't change much but this is probably because the screening strategy is doing a lot
+# Now I've made sure vaccination isn't being applied twice it looks like it's working much better
 # %% check Oct 2023 vaccination isn't being applied twice
-print(test_fn['interventions'])
-# [hpv.routine_vx(product=quadrivalent, prob=None, age_range=[9, 14], sex=0, eligibility=None, label=None), 
-# hpv.routine_vx(product=quadrivalent, prob=None, age_range=[9, 14], sex=0, eligibility=None, label=None)
+# print(test_fn['interventions'])
+# # [hpv.routine_vx(product=quadrivalent, prob=None, age_range=[9, 14], sex=0, eligibility=None, label=None), 
+# # Now only showing this vaccination once so that's good
 
-# To remove one of them should I just exlude vax altogether? Will commit to main, edit and can always return to this version 
 
-# %%
-
-# Lets check what happens if we only start the screening streategy in 2040
-test_fn3= add_screening(age_range=[25,64], label ='23 vax', years = np.arange(2040,2050))
-test_fn3.run()
-test_fn4= add_screening(age_range=[25,64], label ='no 23 vax', years = np.arange(2040,2050), vax=False)
-test_fn4.run()
-
+# # Check the vaccination isn't being included in test_fn2
+# print(test_fn2['interventions'])
+# # Great is not being included
 
 # %%
 
 
+# # Lets check what happens if we only start the screening streategy in 2040
+# test_fn3= add_screening(age_range=[25,64], label ='23 vax', years = np.arange(2040,2050))
+# test_fn3.run()
+# test_fn4= add_screening(age_range=[25,64], label ='no 23 vax', years = np.arange(2040,2050), vax=False)
+# test_fn4.run()
+# # These took ages to run but that is expected since we are applying screening every year
 
-# Lets check what happens if we only start the screening streategy in 2040
-test_fn3= add_screening(age_range=[25,64], label ='23 vax', years = np.arange(2040,2050))
-test_fn3.run()
-test_fn4= add_screening(age_range=[25,64], label ='no 23 vax', years = np.arange(2040,2050), vax=False)
-test_fn4.run()
+# comp_vx2 = hpv.MultiSim(([test_fn3, test_fn4]))
+# comp_vx2.plot()
+# # Producing a lot of code. I think this whole script, Maybe because it used the function that
+# # is defined in this script, so it imports the whole script? But then why wouldn't it do that for 
+# # the other functions?
 
-comp_vx2 = hpv.MultiSim(([test_fn3, test_fn4]))
-comp_vx2.plot()
+# # Regardless, looks like it's working fine so happpy with this. 
 
-## The screening strategy looks like it's doing a lot !!
+# ## The screening strategy looks like it's doing a lot !!
+
+# %% Final test is to compare what happens when you remove the vaccination for 2 sims
+# One of them has screeing starting in 2024, the other has no screening
+# Hope to see they look the same until 2024
+
+novx_nosc = make_nigeria_sim(vax=False)
+novx_sc= add_screening(vax=False, age_range=[25,64], label ='23 vax', years = np.arange(2040,2050))
+
+mult = hpv.MultiSim([novx_nosc,novx_sc])
+mult.run()
+mult.plot()
+# Okay yes passed the test!
+# Is running the whole script for some reason. Wonder| what would happen if I commented other secions out. 
+# would it just run this section twice?
+
+# Weirdly just runs it once. Anywho, it's running fine. 
+
+
+# %% Check that kwargs are passed to make_nigeria_sim
+
+# orig = add_screening(age_range=[25,64], label ='Check kwargs',years = np.arange(2040,2050))
+# orig.run()
+# orig.plot()
+
+# rand = add_screening(rand_seed=2, age_range=[25,64], label ='Check kwargs',years = np.arange(2040,2050))
+# rand.run()
+# rand.plot()
+
+# # Very weirdly shaped cancers by age...
+
+# base=hpv.Sim()
+# base.run()
+# base.plot() # hmm okay seems like something very wrong
+
