@@ -29,7 +29,7 @@ def add_screening(age_range, label,vax = True, start_year=2026, **kwargs):
     # First add in the vaccination introduced in Oct 2023 to 9-14 year olds
     if vax == True:
         vx = hpv.routine_vx(prob=0.9, start_year = 2024, age_range=[9,14], product='quadrivalent')
-    else: vx = None
+    else: vx = []
     
     
     # Defaults
@@ -68,7 +68,9 @@ def add_screening(age_range, label,vax = True, start_year=2026, **kwargs):
     
     
     ## Apply it to the sim
-    sim = make_nigeria_sim(interventions = [vx, screen, triage, assign_tx, ablation, excision], label = label, **kwargs)
+    sim = make_nigeria_sim(interventions = vx + [screen, triage, assign_tx, ablation, excision], label = label, **kwargs)
+    # If vax = False, then vx =[], so not included in interventions
+    # If vax=True, then vx = an intevention, is concatenated with the other interventions
     
     return sim
 
@@ -78,9 +80,10 @@ def add_screening(age_range, label,vax = True, start_year=2026, **kwargs):
 # test_fn.run()
 # test_fn.plot()
 
-test_fn2= add_screening(age_range=[25,64], label ='test', vax=False)
-test_fn2.run()
-test_fn2.plot()
+# Excluding the vax works fine
+# test_fn2= add_screening(age_range=[25,64], label ='test', vax=False)
+# test_fn2.run()
+# test_fn2.plot()
 
 
 

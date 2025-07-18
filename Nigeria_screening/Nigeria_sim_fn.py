@@ -10,11 +10,26 @@ import hpvsim as hpv
 
 # Make a Nigeria sim function
 
-def make_nigeria_sim(interventions=None, rand_seed=None, **kwargs):
+def make_nigeria_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
     '''
     Create a Nigeria parameterised simulation
     '''
     
+    # First add in the vaccination introduced in Oct 2023 to 9-14 year olds
+    if vax == True:
+        vx = [hpv.routine_vx(prob=0.9, start_year = 2024, age_range=[9,14], product='quadrivalent')] # Needs be a list so it can concatenate with interventions
+    else: vx = None
+    
+    
+    # Ensure vx and interventions are lists (or None)
+    if vx is None and interventions is None:
+        combined_interventions = None
+    else:
+        vx = vx or [] # if vx and interventions are both not None, then vx will either be the list that was passed, or is no list was passed, it will default to empty list. You won't have two empty lists, since it both were none would default to none
+        interventions = interventions or []
+        combined_interventions = vx + interventions
+
+
     if rand_seed is None:
         rand_seed = 1
     
@@ -64,7 +79,7 @@ def make_nigeria_sim(interventions=None, rand_seed=None, **kwargs):
     Nigeria_pars = {**location_pars, **layer_pars, **sim_pars, **net_pars}
 
 
-    Nigeria_sim = hpv.Sim(pars=Nigeria_pars, rand_seed = rand_seed, interventions=interventions, **kwargs)
+    Nigeria_sim = hpv.Sim(pars=Nigeria_pars, rand_seed = rand_seed, interventions= combined_interventions, **kwargs)
     
     
     
@@ -83,52 +98,60 @@ def make_nigeria_sim(interventions=None, rand_seed=None, **kwargs):
     Nigeria_sim.genotype_pars = genotype_pars
     
     
-    
-    
+
     return Nigeria_sim
 
-
-# # Works alone
-# sim1 = make_nigeria_sim(label = 'no vax')
-# sim1.run()
-# sim1.plot()
-
-# # Works changing random seed
-# sim2 = make_nigeria_sim(rand_seed = 2)
-# sim2.run()
-# sim2.plot()
-
-# # Accepts keyword args
-# sim3 = make_nigeria_sim(location = 'india')
-# sim3.run()
-# sim3.plot()
-# sim3['location'] # india
+# %%
 
 
-# # Accepts interventions
-# vx = hpv.routine_vx(prob=0.6, start_year=2015, age_range=[9,10], product='bivalent')
-# sim4 = make_nigeria_sim(interventions = vx, label = 'vax')
-# sim4.run()
-# sim4.plot()
-# sim4['interventions'] 
-# # Out[328]: [hpv.routine_vx(product=bivalent, prob=None, age_range=[9, 10], sex=0, eligibility=None, label=None)]
-# # Not sure why prob = None
-# # That said, if you compare it to Sim1, cancer incidence per age is the same up to 2015,
-# # and declines after that, therefore am sure that it is being applied
-# print(type(sim4['interventions'])) # list, not a dictionary, so can't call elements by name
-# sim4['interventions'][0]
+
+# Works alone
+sim1 = make_nigeria_sim(label = 'no vax')
+sim1.run()
+sim1.plot()
+
+# Works changing random seed
+sim2 = make_nigeria_sim(rand_seed = 2)
+sim2.run()
+sim2.plot()
+
+# Accepts keyword args
+sim3 = make_nigeria_sim(location = 'india')
+sim3.run()
+sim3.plot()
+sim3['location'] # india
 
 
-# # Plot comparison 
-# msim.plot(sim1, sim4) # note this doesn't work because it only works if you used
-# # multisim to create the plots in the first place
+# Accepts interventions
+vx = hpv.routine_vx(prob=0.6, start_year=2015, age_range=[9,10], product='bivalent')
+sim4 = make_nigeria_sim(interventions = [vx], label = 'vax')
+sim4.run()
+sim4.plot()
+sim4['interventions'] 
+# Out[328]: [hpv.routine_vx(product=bivalent, prob=None, age_range=[9, 10], sex=0, eligibility=None, label=None)]
+# Not sure why prob = None
+# That said, if you compare it to Sim1, cancer incidence per age is the same up to 2015,
+# and declines after that, therefore am sure that it is being applied
+print(type(sim4['interventions'])) # list, not a dictionary, so can't call elements by name
+sim4['interventions'][0]
 
-# # You don't need to run them again, but you do have to create a multisim in order
-# # to compare them
+# Lets you remove the vax
+sim5 = make_nigeria_sim(vax=False)
+sim5.run()
+sim5.plot()
 
-# msim = hpv.MultiSim([sim1,sim4])
 
-# msim.plot()
+
+# Plot comparison 
+msim.plot(sim1, sim4) # note this doesn't work because it only works if you used
+# multisim to create the plots in the first place
+
+# You don't need to run them again, but you do have to create a multisim in order
+# to compare them
+
+msim = hpv.MultiSim([sim1,sim4])
+
+msim.plot()
 
 
 

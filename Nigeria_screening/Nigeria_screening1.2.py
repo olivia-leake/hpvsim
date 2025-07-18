@@ -8,7 +8,7 @@ Created on Thu Jul 17 11:03:29 2025
 
 # Nigeria vaccination and screening
 
-## Need to access the simulation made in Nigeria_screening
+## Need to access the function made in Nigeria_screening
 import sys
 import os
 import sciris as sc
