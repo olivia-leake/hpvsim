@@ -91,6 +91,7 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
     
     return sim
 
+
 # %%
 
 ## Not sure if Oct 2023 vax being handled okay
@@ -147,12 +148,13 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
 # One of them has screeing starting in 2024, the other has no screening
 # Hope to see they look the same until 2024
 
-novx_nosc = make_nigeria_sim(vax=False)
-novx_sc= add_screening(vax=False, age_range=[25,64], label ='23 vax', years = np.arange(2040,2050))
+# novx_nosc = make_nigeria_sim(vax=False)
+# novx_sc= add_screening(vax=False, age_range=[25,64], label ='23 vax', years = np.arange(2040,2050))
 
-mult = hpv.MultiSim([novx_nosc,novx_sc])
-mult.run()
-mult.plot()
+# mult = hpv.MultiSim([novx_nosc,novx_sc])
+# mult.run()
+# mult.plot()
+
 # Okay yes passed the test!
 # Is running the whole script for some reason. Wonder| what would happen if I commented other secions out. 
 # would it just run this section twice?
@@ -175,4 +177,19 @@ mult.plot()
 # base=hpv.Sim()
 # base.run()
 # base.plot() # hmm okay seems like something very wrong
+
+# %% Haven't tried changing intervals
+
+base_sim = make_nigeria_sim()
+sim_int1 = sim_int2 = add_screening(age_range=[9,14], years=np.arange(2026,2050) , label ='Screen every year')
+sim_int2 = add_screening(age_range=[9,14], years=np.arange(2026,2050,2), label ='Screen every 2 years')
+sim_int5 = add_screening(age_range=[9,14], years=np.arange(2026,2050,5), label ='Screen every 5 years')
+
+base_sim.run()
+sim_int1.run() 
+sim_int2.run()
+sim_int5.run()
+# Okay this works
+
+
 
