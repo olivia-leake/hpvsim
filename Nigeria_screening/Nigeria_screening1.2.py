@@ -28,6 +28,9 @@ print(sim1.pars) # Check everything has been imported properly
 
 sim2 = make_nigeria_sim(interventions = vx, label ='vx')
 
+# %% Don't run this cell if you want to run the next cell - can't run the sims if they've already been ran
+
+
 msim = hpv.MultiSim( [sim1, sim2] )
 msim.run()
 msim.plot()
@@ -57,35 +60,33 @@ to_treat    = lambda sim: sim.get_intervention('triage').outcomes['positive'] # 
 
 # This function decides who gets what treatment - not sure what this is based off?
 # Is there a prob distn that shows what the percentage of woman who get what is?
-assign_tx   = hpv.routine_triage(eligibility=to_treat, prob=prob, product='tx_assigner', label='assign_tx') # Assign treatment
+assign_tx   = hpv.routine_triage(eligibility=to_treat, prob=1, product='tx_assigner', label='assign_tx') # Assign treatment
 
 # The people to ablate are the ones that got ablation as the treatment assignment
 to_ablate   = lambda sim: sim.get_intervention('assign_tx').outcomes['ablation'] # Define who's eligible for ablation treatment
-ablation    = hpv.treat_num(eligibility=to_ablate, prob=prob, product='ablation') # Administer ablation
+ablation    = hpv.treat_num(eligibility=to_ablate, prob=0.95, product='ablation') # Administer ablation
 
 # The people to excise are the ones that got excision as the treatment assignment
 to_excise   = lambda sim: sim.get_intervention('assign_tx').outcomes['excision'] # Define who's eligible for excision
-excision    = hpv.treat_delay(eligibility=to_excise, prob=prob, product='excision') # Administer excision
+excision    = hpv.treat_delay(eligibility=to_excise, prob=0.95, product='excision') # Administer excision
+
+
 
 # Apply the strategy, to see if it helps me answer any of my questions
 
-# Need to remember to include the vaccination introduced in Oct 2023
-# Note that the lambds functions aren't interventions so don't need to be included
-# all they're doing is checking who needs the treatment
 screen_sim = make_nigeria_sim(interventions = [vx, screen, triage, assign_tx, ablation, excision], label = 'Screening' )
 screen_sim.run()
 screen_sim.plot()
 
 
+# %%
 
 
-sim1.initialize(reset= True)
-sim2.initialize(reset= True)
-screen_sim.initialize(reset=True)
-# I'm getting an error here. Solution is to check tutorial 5 to see if it includes nany errors
 
 
 compare_sims = hpv.MultiSim(([sim1,sim2,screen_sim]))
+# Note that this doesn't run when you have run each of the sims individually
+# Initialize isn't really working so going to by-pass this by doing it from scratch each time
 compare_sims.run()
 compare_sims.plot()
 
@@ -113,11 +114,6 @@ compare_sims.plot()
 
 
 
-# %% Initialising incase you need to run the sim again
-
-
-sim1.initialize(rest=True)
-sim2.initialize(reset=True)
 # %%
 
 

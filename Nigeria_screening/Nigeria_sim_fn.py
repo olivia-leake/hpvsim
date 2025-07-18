@@ -11,6 +11,9 @@ import hpvsim as hpv
 # Make a Nigeria sim function
 
 def make_nigeria_sim(interventions=None, rand_seed=None, **kwargs):
+    '''
+    Create a Nigeria parameterised simulation
+    '''
     
     if rand_seed is None:
         rand_seed = 1
