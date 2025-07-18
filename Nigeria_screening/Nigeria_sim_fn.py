@@ -15,7 +15,7 @@ def make_nigeria_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
     Create a Nigeria parameterised simulation
     '''
     
-    # First add in the vaccination introduced in Oct 2023 to 9-14 year olds
+    # First add in the vaccination introduced in Oct 2023 to 9-14 year olds. This is a yearly vaccination
     if vax == True:
         vx = [hpv.routine_vx(prob=0.9, start_year = 2024, age_range=[9,14], product='quadrivalent')] # Needs be a list so it can concatenate with interventions
     else: vx = None

@@ -100,7 +100,7 @@ test_fn= add_screening(age_range=[25,64], label ='23 vax')
 test_fn.run()
 test_fn.plot()
 
-# Excluding the vax works fine
+# Excluding the vax works fine|
 test_fn2= add_screening(age_range=[25,64], label ='no 23 vax', vax=False)
 test_fn2.run()
 test_fn2.plot()
@@ -111,6 +111,13 @@ comp_vx = hpv.MultiSim(([test_fn, test_fn2]))
 comp_vx.plot()
 # Yes looks like the vaccination is being removed properly
 # Doesn't change much but this is probably because the screening strategy is doing a lot
+# %% check Oct 2023 vaccination isn't being applied twice
+print(test_fn['interventions'])
+# [hpv.routine_vx(product=quadrivalent, prob=None, age_range=[9, 14], sex=0, eligibility=None, label=None), 
+# hpv.routine_vx(product=quadrivalent, prob=None, age_range=[9, 14], sex=0, eligibility=None, label=None)
+
+# To remove one of them should I just exlude vax altogether? Will commit to main, edit and can always return to this version 
+
 # %%
 
 # Lets check what happens if we only start the screening streategy in 2040
