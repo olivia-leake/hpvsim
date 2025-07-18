@@ -10,6 +10,7 @@ Created on Fri Jul 18 10:14:25 2025
 
 import sys
 import os
+import numpy as np
 import sciris as sc
 sys.path.append("/Users/olivialeake/Library/CloudStorage/OneDrive-Nexus365/Part B/BSP project/HPV Project/hpvsim")
 
@@ -19,8 +20,8 @@ from Nigeria_screening.Nigeria_sim_fn import make_nigeria_sim
 
 
 
-def add_screening(age_range, label, vax=True, start_year=2026, interventions=None, **kwargs): 
-    #Start year is 2026 by default
+def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interventions=None, **kwargs): 
+    #Start year is 2026 by default, and increases yearly
     
     '''
     Create a new sim with a routine screening strategy
@@ -34,6 +35,9 @@ def add_screening(age_range, label, vax=True, start_year=2026, interventions=Non
     if vax==True:    
         vx = hpv.routine_vx(prob=0.9, start_year=2024, age_range=[9,14], product='quadrivalent')
         interventions = [vx] + interventions 
+    # Vaccination is being applied every year by default
+    
+    
     
     # Removed this as have let the make_nigeria_sim function handle vaccinations instead
     
@@ -56,7 +60,7 @@ def add_screening(age_range, label, vax=True, start_year=2026, interventions=Non
 
 
     # First do hpv test
-    screen      = hpv.routine_screening(start_year=start_year, age_range = age_range, prob=prob, product='hpv', label='screen') # Routine screening
+    screen      = hpv.routine_screening(years=years, age_range = age_range, prob=prob, product='hpv', label='screen') # Routine screening
     to_triage   = lambda sim: sim.get_intervention('screen').outcomes['positive'] # Define who's eligible for triage
 
     # Relfex cytology (perform lbc on the same sample that test positive for HPV)
@@ -107,12 +111,23 @@ comp_vx = hpv.MultiSim(([test_fn, test_fn2]))
 comp_vx.plot()
 # Yes looks like the vaccination is being removed properly
 # Doesn't change much but this is probably because the screening strategy is doing a lot
+# %%
+
+# Lets check what happens if we only start the screening streategy in 2040
+test_fn3= add_screening(age_range=[25,64], label ='23 vax', years = np.arange(2040,2050))
+test_fn3.run()
+test_fn4= add_screening(age_range=[25,64], label ='no 23 vax', years = np.arange(2040,2050), vax=False)
+test_fn4.run()
+
+
+# %%
+
 
 
 # Lets check what happens if we only start the screening streategy in 2040
-test_fn3= add_screening(age_range=[25,64], label ='23 vax', start_year=2040)
+test_fn3= add_screening(age_range=[25,64], label ='23 vax', years = np.arange(2040,2050))
 test_fn3.run()
-test_fn4= add_screening(age_range=[25,64], label ='no 23 vax', start_year=2040, vax=False)
+test_fn4= add_screening(age_range=[25,64], label ='no 23 vax', years = np.arange(2040,2050), vax=False)
 test_fn4.run()
 
 comp_vx2 = hpv.MultiSim(([test_fn3, test_fn4]))
