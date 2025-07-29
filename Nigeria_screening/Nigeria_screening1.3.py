@@ -11,7 +11,7 @@ import sys
 import os
 import sciris as sc
 import numpy as np
-sys.path.append("/Users/olivialeake/Library/CloudStorage/OneDrive-Nexus365/Part B/BSP project/HPV Project/hpvsim")
+sys.path.append('/Users/olivialeake/Documents/BSP project/HPV Project/hpvsim')
 
 
 from Nigeria_screening.Nigeria_sim_fn import make_nigeria_sim
@@ -19,7 +19,7 @@ from Nigeria_screening.Nig_screen_fn import add_screening
 
 import hpvsim as hpv
 
-# All these sims include the vaccination introduced in Oct 2023
+# All these sims include the vaccination introduced in Oct 2|023
 
 orig = make_nigeria_sim(rand_seed = 1)
 
@@ -33,14 +33,28 @@ strat1_3 = add_screening(rand_seed = 1, age_range = [18,64],
                         years = np.arange(2026,2050,10),label = 'Age: 18-64, Interval=10')
 
 
-
 # Compare screening intervals for age range 18-64
 comp = hpv.MultiSim([orig, strat1_1,strat1_2,strat1_3])
 comp.run()
 comp_strat1 = comp.plot()
 
+
+# Check the results of the plots
+for sim in comp.sims:
+    sim.brief()
+    
+# Sim("Sim 0"; 1990 to 2050; pop: 10000 default; epi: 1.21454e+09⚙, 1.03663e+06♋︎)
+# Sim("Age: 18-64, Interval=2"; 1990 to 2050; pop: 10000 default; epi: 1.16455e+09⚙, 803820♋︎)
+# Sim("Age: 18-64, Interval=5"; 1990 to 2050; pop: 10000 default; epi: 1.16341e+09⚙, 809569♋︎)
+# Sim("Age: 18-64, Interval=10"; 1990 to 2050; pop: 10000 default; epi: 1.16341e+09⚙, 809569♋︎)
+#
+# There is a difference between strat1_1 and _2,_3 so know something has changed - tells me something probs wrong with 
+# screening or vaccination itself
+
+
+
 # save fig to mac. Don't forget .png !
-hpv.savefig('/Users/olivialeake/Library/CloudStorage/OneDrive-Nexus365/Part B/BSP project/HPV Project/Overleaf material/My plots/compare strat 1.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/Nigeria/compare strat 1.png',
             fig = comp_strat1)
 
 # Doesn't seem to be much difference betweem them

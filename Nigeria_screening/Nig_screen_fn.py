@@ -12,7 +12,7 @@ import sys
 import os
 import numpy as np
 import sciris as sc
-sys.path.append("/Users/olivialeake/Library/CloudStorage/OneDrive-Nexus365/Part B/BSP project/HPV Project/hpvsim")
+sys.path.append('/Users/olivialeake/Documents/BSP project/HPV Project/hpvsim')
 
 import hpvsim as hpv
 
@@ -33,25 +33,10 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
     if interventions is None:
         interventions = []
         
-    # # Add vaccinatoin if requested:
-    # if vax==True:    
-    #     vx = hpv.routine_vx(prob=0.9, start_year=2024, age_range=[9,14], product='quadrivalent')
-    #     interventions = [vx] + interventions 
-    # # Vaccination is being applied every year by default
-    
-    
-    
-    # Removed this as have let the make_nigeria_sim function handle vaccinations instead
-    
-    # # First add in the vaccination introduced in Oct 2023 to 9-14 year olds
-    # if vax == True:
-    #     vx = hpv.routine_vx(prob=0.9, start_year = 2024, age_range=[9,14], product='quadrivalent')
-    # else: vx = []
-    
     
     # Defaults
-    prob = 0.6 # Could consider starting at 60% then increasing to 90% as becomes more popular)
-    prob_treat = 0.95 # Assume few woman would refuse treatment
+    prob = 0.3 # Could consider starting at 60% then increasing to 90% as becomes more popular) #0.6
+    prob_treat = 0.3 # Assume few woman would refuse treatment #0.95
     
     
     # the probability (60%) that eligible individuals between the ages of 25 64
@@ -94,8 +79,8 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
 
 # %%
 
-## Not sure if Oct 2023 vax being handled okay
-## Not sure if you can iclude your own inventions on top of this screening strategy
+# # Not sure if Oct 2023 vax being handled okay
+# # Not sure if you can iclude your own inventions on top of this screening strategy
 
 
 # ## Think runs fine
@@ -112,9 +97,10 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
 # # Compare vacx vs no vax
 # comp_vx = hpv.MultiSim(([test_fn, test_fn2]))
 # comp_vx.plot()
-# Yes looks like the vaccination is being removed properly
-# Now I've made sure vaccination isn't being applied twice it looks like it's working much better
+# # Yes looks like the vaccination is being removed properly
+# # Now I've made sure vaccination isn't being applied twice it looks like it's working much better
 # %% check Oct 2023 vaccination isn't being applied twice
+
 # print(test_fn['interventions'])
 # # [hpv.routine_vx(product=quadrivalent, prob=None, age_range=[9, 14], sex=0, eligibility=None, label=None), 
 # # Now only showing this vaccination once so that's good
@@ -145,8 +131,9 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
 # ## The screening strategy looks like it's doing a lot !!
 
 # %% Final test is to compare what happens when you remove the vaccination for 2 sims
-# One of them has screeing starting in 2024, the other has no screening
-# Hope to see they look the same until 2024
+
+# # One of them has screeing starting in 2024, the other has no screening
+# # Hope to see they look the same until 2024
 
 # novx_nosc = make_nigeria_sim(vax=False)
 # novx_sc= add_screening(vax=False, age_range=[25,64], label ='23 vax', years = np.arange(2040,2050))
@@ -155,11 +142,11 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
 # mult.run()
 # mult.plot()
 
-# Okay yes passed the test!
-# Is running the whole script for some reason. Wonder| what would happen if I commented other secions out. 
-# would it just run this section twice?
+# # Okay yes passed the test!
+# # Is running the whole script for some reason. Wonder| what would happen if I commented other secions out. 
+# # would it just run this section twice?
 
-# Weirdly just runs it once. Anywho, it's running fine. 
+# # Weirdly just runs it once. Anywho, it's running fine. 
 
 
 # %% Check that kwargs are passed to make_nigeria_sim
@@ -172,24 +159,25 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
 # rand.run()
 # rand.plot()
 
-# # Very weirdly shaped cancers by age...
+# # # Very weirdly shaped cancers by age...
+# # Think fine actualy. Think it's just picking pup on screening stopping at 64
 
 # base=hpv.Sim()
 # base.run()
-# base.plot() # hmm okay seems like something very wrong
+# base.plot() # Just seeing what it normally looks like
 
 # %% Haven't tried changing intervals
 
-base_sim = make_nigeria_sim()
-sim_int1 = sim_int2 = add_screening(age_range=[9,14], years=np.arange(2026,2050) , label ='Screen every year')
-sim_int2 = add_screening(age_range=[9,14], years=np.arange(2026,2050,2), label ='Screen every 2 years')
-sim_int5 = add_screening(age_range=[9,14], years=np.arange(2026,2050,5), label ='Screen every 5 years')
+# base_sim = make_nigeria_sim()
+# sim_int1 = sim_int2 = add_screening(age_range=[9,14], years=np.arange(2026,2050) , label ='Screen every year')
+# sim_int2 = add_screening(age_range=[9,14], years=np.arange(2026,2050,2), label ='Screen every 2 years')
+# sim_int5 = add_screening(age_range=[9,14], years=np.arange(2026,2050,5), label ='Screen every 5 years')
 
-base_sim.run()
-sim_int1.run() 
-sim_int2.run()
-sim_int5.run()
-# Okay this works
+# base_sim.run()
+# sim_int1.run() 
+# sim_int2.run()
+# sim_int5.run()
+# # Okay this works
 
 
 
