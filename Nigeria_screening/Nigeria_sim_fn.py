@@ -50,6 +50,8 @@ def make_nigeria_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
         beta = 0.3 # Not a genotype parameter so specify it here. TEMP, update with Fabian parameters
         )
     
+# Beta default is 0.25
+    
     
     # Parameters specified by layer
     layer_pars = dict(
@@ -80,7 +82,7 @@ def make_nigeria_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
 
 
     Nigeria_sim = hpv.Sim(pars=Nigeria_pars, rand_seed = rand_seed, interventions= combined_interventions, **kwargs)
-    
+
     
     
     ## Genotype pars have to be added after the sims creation
@@ -88,19 +90,67 @@ def make_nigeria_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
     genotype_pars = hpv.parameters.get_genotype_pars()
     # then genotype_pars is the object dictionary containing all the genotypes
 
-    genotype_pars.hpv16.dur_precin['par1'] = 6  # TEMP
-    genotype_pars.hpv16.cin_fn['k'] = 0.3       # TEMP
-    genotype_pars.hpv18.dur_precin['par2'] = 5  # TEMP
-    genotype_pars.hpv18.cin_fn['k'] = 0.28      # TEMP
+    genotype_pars.hpv16.dur_precin['par1'] = 6  # TEMP # Default = 3
+    genotype_pars.hpv16.cin_fn['k'] = 0.3       # TEMP # Default = 0.3
+    genotype_pars.hpv18.dur_precin['par1'] = 5  # TEMP # Default = 2.5
+    genotype_pars.hpv18.cin_fn['k'] = 0.28      # TEMP # Default = 3
 
 
     # Assign the genotype parameters to the simulation
     Nigeria_sim.genotype_pars = genotype_pars
     
-    
 
     return Nigeria_sim
 
+# %%
+
+# Testing multisim - could do this inside the sim function, but think better to do outside
+
+N = make_nigeria_sim()
+# Great this works as stand alone
+# Can you use the resutls going forward?
+
+# Want to run the sim multiple times and average
+multisim = hpv.MultiSim(N)
+multisim.run(n_runs=2)  # start with 2 but increase to 4 or 12
+multisim.plot()
+multisim.mean() # Now has combined the simulations
+multisim.plot() # plots the mean rather than a comparison
+
+
+
+
+
+# %% DEFAULTS
+
+# Beta default is 0.25
+
+# dur_pship   = dict(m=dict(dist='neg_binomial', par1=80, par2=3), # This gives: mar_dur = {'0-5y': 0.015, '5-10y': 0.025, '10-20y':0.06, '20-50y':0.25, '50+':0.65}
+#                    c=dict(dist='lognormal', par1=1, par2=2)), # This gives: cas_dur = {'0-3m': 0.33, '3-6m': 0.22, '6-12m': 0.2, '1-2y':0.15, '2-5y':0.1}
+
+
+# pars['f_cross_layer']   = 0.05  # Proportion of females who have concurrent cross-layer relationships - by layer
+# pars['m_cross_layer']   = 0.30  # Proportion of males who have concurrent cross-layer relationships - by layer
+
+
+# layer_defaults['default'] = dict(
+#     m_partners = dict(
+#         m=dict(dist='poisson1', par1=0.01), # Everyone in this layer has one marital partner; this captures *additional* marital partners. If using a poisson distribution, par1 is roughly equal to the proportion of people with >1 spouse
+#         c=dict(dist='poisson1', par1=0.5)
+#     ),  # If using a poisson distribution, par1 is roughly equal to the proportion of people with >1 casual partner within a single time step
+#     f_partners = dict(
+#         m=dict(dist="poisson1", par1=0.01),
+#         c=dict(dist='poisson', par1=1), # Defaults: {'0': 0.36, '1': 0.37, '2': 0.19, '3': 0.06, '4+':0.02}
+#     ),
+#     acts         = dict(m=dict(dist='neg_binomial', par1=80, par2=40), # Default number of acts per year for people at sexual peak
+#                         c=dict(dist='neg_binomial', par1=50, par2=5)), # Default number of acts per year for people at sexual peak
+#     age_act_pars = dict(m=dict(peak=30, retirement=100, debut_ratio=0.5, retirement_ratio=0.1), # Parameters describing changes in coital frequency over agent lifespans
+#                         c=dict(peak=25, retirement=100, debut_ratio=0.5, retirement_ratio=0.1)),
+#     dur_pship   = dict(m=dict(dist='neg_binomial', par1=80, par2=3), # This gives: mar_dur = {'0-5y': 0.015, '5-10y': 0.025, '10-20y':0.06, '20-50y':0.25, '50+':0.65}
+#                        c=dict(dist='lognormal', par1=1, par2=2)), # This gives: cas_dur = {'0-3m': 0.33, '3-6m': 0.22, '6-12m': 0.2, '1-2y':0.15, '2-5y':0.1}
+#     condoms     = dict(m=0.01, c=0.2),  # Default proportion of acts in which condoms are used
+# )
+# layer_defaults['default']['mixing'], layer_defaults['default']['layer_probs'] = get_mixing('default')
 # %%
 
 
