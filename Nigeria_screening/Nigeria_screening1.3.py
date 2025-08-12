@@ -35,7 +35,7 @@ strat1_3 = add_screening(rand_seed = 1, age_range = [18,64],
 
 # Compare screening intervals for age range 18-64
 comp = hpv.MultiSim([orig, strat1_1,strat1_2,strat1_3])
-comp.run()
+comp.run(n_run=2, die=False)
 comp_strat1 = comp.plot()
 
 
@@ -84,7 +84,7 @@ comp2 = hpv.MultiSim([orig, strat2_1,strat2_2,strat2_3])
 comp2.run()
 comp_strat2 = comp2.plot()
     
-hpv.savefig('/Users/olivialeake/Library/CloudStorage/OneDrive-Nexus365/Part B/BSP project/HPV Project/Overleaf material/My plots/compare strat 2.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/Nigeria/compare strat 2.png',
             fig = comp_strat2)
 
 # Overall seems slightly worse to start screening at 25 rather than 18
@@ -111,14 +111,28 @@ comp_strat3 = comp3.plot()
 # Weirdly does decrease quite a lot, eventhough life expectancy is Nigeria is 53
 # Again should run multiple sims and average them
 
-hpv.savefig('/Users/olivialeake/Library/CloudStorage/OneDrive-Nexus365/Part B/BSP project/HPV Project/Overleaf material/My plots/compare strat 3.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/Nigeria/compare strat 3.png',
             fig = comp_strat3)
 
 
 # %%
 
+# Not getting a difference in the sims.. going to compare same interval different ages. Which need to do anyways actually 
 
+# Compare ages for interval 2
+comp4 = hpv.MultiSim([orig, strat1_1, strat2_1, strat3_1])
+comp4.run(n_run=5)
+comp_strat4 = comp4.plot()
+comp4.brief()
     
-    
+# Compare ages for interval 5
+comp5 = hpv.MultiSim([orig, strat1_2, strat2_2, strat3_2])
+comp5.run()
+comp_strat5 = comp5.plot()
+
+# Compare ages for interval 10
+comp6 = hpv.MultiSim([orig, strat1_3, strat2_3, strat3_3]) 
+comp6.run()
+comp_strat6 = comp6.plot()   
     
     

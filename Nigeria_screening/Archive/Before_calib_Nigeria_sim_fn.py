@@ -8,9 +8,9 @@ Created on Thu Jul 17 10:00:57 2025
 import hpvsim as hpv
 
 
-# Make a Nigeria sim function
+# Make a Nigeria sim function  - this one has no beta, genotype pars or f/m_cross_layer
 
-def make_nigeria_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
+def nigeria_uncalib_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
     '''
     Create a Nigeria parameterised simulation
     '''
@@ -47,7 +47,7 @@ def make_nigeria_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
     location_pars = dict(
         location = 'Nigeria',
         network = 'default',     # Use layered network rather than random,
-        beta = 0.3 # Not a genotype parameter so specify it here. TEMP, update with Fabian parameters
+        # beta = 0.3 # Not a genotype parameter so specify it here. TEMP, update with Fabian parameters
         )
     
 # Beta default is 0.25
@@ -70,52 +70,38 @@ def make_nigeria_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
     # of married and casual
     
     
-    # Network paramters from Fabian calibration
-    net_pars = {
-        'f_cross_layer' : 0.05, # temporary until get Fabian calib
-        'm_cross_layer' : 0.15 # temporary until get Fabian calib
-        }
+    # # Network paramters from Fabian calibration
+    # net_pars = {
+    #     'f_cross_layer' : 0.05, # temporary until get Fabian calib
+    #     'm_cross_layer' : 0.15 # temporary until get Fabian calib
+    #     }
     
     
     # Combine the dictionaries
-    Nigeria_pars = {**location_pars, **layer_pars, **sim_pars, **net_pars}
+    Nigeria_pars = { #**net_pars,
+        **location_pars, **layer_pars, **sim_pars, }
 
 
     Nigeria_sim = hpv.Sim(pars=Nigeria_pars, rand_seed = rand_seed, interventions= combined_interventions, **kwargs)
 
     
     
-    ## Genotype pars have to be added after the sims creation
+    # ## Genotype pars have to be added after the sims creation
     
-    genotype_pars = hpv.parameters.get_genotype_pars()
-    # then genotype_pars is the object dictionary containing all the genotypes
+    # genotype_pars = hpv.parameters.get_genotype_pars()
+    # # then genotype_pars is the object dictionary containing all the genotypes
 
-    genotype_pars.hpv16.dur_precin['par1'] = 6  # TEMP # Default = 3
-    genotype_pars.hpv16.cin_fn['k'] = 0.3       # TEMP # Default = 0.3
-    genotype_pars.hpv18.dur_precin['par1'] = 5  # TEMP # Default = 2.5
-    genotype_pars.hpv18.cin_fn['k'] = 0.28      # TEMP # Default = 3
+    # genotype_pars.hpv16.dur_precin['par1'] = 6  # TEMP # Default = 3
+    # genotype_pars.hpv16.cin_fn['k'] = 0.3       # TEMP # Default = 0.3
+    # genotype_pars.hpv18.dur_precin['par1'] = 5  # TEMP # Default = 2.5
+    # genotype_pars.hpv18.cin_fn['k'] = 0.28      # TEMP # Default = 3
 
 
-    # Assign the genotype parameters to the simulation
-    Nigeria_sim.genotype_pars = genotype_pars
+    # # Assign the genotype parameters to the simulation
+    # Nigeria_sim.genotype_pars = genotype_pars
     
 
     return Nigeria_sim
-
-# %%
-
-# Testing multisim - could do this inside the sim function, but think better to do outside
-
-N = make_nigeria_sim()
-# Great this works as stand alone
-# Can you use the resutls going forward?
-
-# Want to run the sim multiple times and average
-multisim = hpv.MultiSim(N)
-multisim.run(n_runs=2)  # start with 2 but increase to 4 or 12
-multisim.plot()
-multisim.mean() # Now has combined the simulations
-multisim.plot() # plots the mean rather than a comparison
 
 
 
@@ -154,7 +140,7 @@ multisim.plot() # plots the mean rather than a comparison
 
 
 # # Works alone
-# sim1 = make_nigeria_sim(label = 'no vax 9 to 10, vax 9 to 14')
+# sim1 = nigeria_uncalib_sim(label = 'no vax 9 to 10, vax 9 to 14')
 # sim1.run()
 # sim1.plot()
 
@@ -164,7 +150,7 @@ multisim.plot() # plots the mean rather than a comparison
 # sim2.plot()
 
 # # Accepts keyword args
-# sim3 = make_nigeria_sim(location = 'india')
+# sim3 =  nigeria_uncalib_sim(location = 'india')
 # sim3.run()
 # sim3.plot()
 # sim3['location'] # india
@@ -186,7 +172,7 @@ multisim.plot() # plots the mean rather than a comparison
 # sim4['interventions'][0]
 
 # # Lets you remove the vax
-# sim5 = make_nigeria_sim(vax=False)
+# sim5 =  nigeria_uncalib_sim(vax=False)
 # sim5.run()
 # sim5.plot()
 

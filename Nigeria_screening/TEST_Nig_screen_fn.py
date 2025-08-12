@@ -22,12 +22,12 @@ from Nigeria_screening.Nigeria_sim_fn import make_nigeria_sim
 
 
 
-def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interventions=None, prob_screen=0.3, prob_triage=1, prob_assign=1, prob_ablate=0.9, prob_excise=0.9, **kwargs): 
+def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interventions=None, prob=0.6, prob_treat=0.3, **kwargs): 
     #Start year is 2026 by default, and increases yearly
     
     # # Defaults
     # prob = 0.6 # Could consider starting at 60% then increasing to 90% as becomes more popular) #0.6
-    # prob_treat = 0.95 # Assume few woman would refuse treatment #0.95
+    # prob_treat = 0.3 # Assume few woman would refuse treatment #0.95
     
     '''
     Create a new sim with a routine screening strategy
@@ -36,7 +36,7 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
     
     if interventions is None:
         interventions = []
-    
+        
     
     # the probability (60%) that eligible individuals between the ages of 25 64
     # in the population will undergo routine screening.
@@ -46,65 +46,48 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
 
 
     # First do hpv test
-    screen      = hpv.routine_screening(years=years, age_range = age_range, prob=prob_screen, product='hpv', label='screen') # Routine screening #0.95
+    screen      = hpv.routine_screening(years=years, age_range = age_range, prob=prob, product='hpv', label='screen') # Routine screening
     to_triage   = lambda sim: sim.get_intervention('screen').outcomes['positive'] # Define who's eligible for triage
 
     # Relfex cytology (perform lbc on the same sample that test positive for HPV)
     # This is done automatically so prob = 1 here
-    triage      = hpv.routine_triage(eligibility=to_triage, prob=prob_triage, product='hpv', label='triage') # Triage people
+    triage      = hpv.routine_triage(eligibility=to_triage, prob=1, product='hpv', label='triage') # Triage people
     to_treat    = lambda sim: sim.get_intervention('triage').outcomes['positive'] # Define who's eligible to be assigned treatment
 
 
     # This function decides who gets what treatment - not sure what this is based off?
     # Is there a prob distn that shows what the percentage of woman who get what is?
-    assign_tx   = hpv.routine_triage(eligibility=to_treat, prob=prob_assign, product='tx_assigner', label='assign_tx') # Assign treatment
+    assign_tx   = hpv.routine_triage(eligibility=to_treat, prob=1, product='tx_assigner', label='assign_tx') # Assign treatment
 
     # The people to ablate are the ones that got ablation as the treatment assignment
     to_ablate   = lambda sim: sim.get_intervention('assign_tx').outcomes['ablation'] # Define who's eligible for ablation treatment
-    ablation    = hpv.treat_num(eligibility=to_ablate, prob=prob_ablate, product='ablation') # Administer ablation
+    ablation    = hpv.treat_num(eligibility=to_ablate, prob=prob_treat, product='ablation') # Administer ablation
 
     # The people to excise are the ones that got excision as the treatment assignment
     to_excise   = lambda sim: sim.get_intervention('assign_tx').outcomes['excision'] # Define who's eligible for excision
-    excision    = hpv.treat_delay(eligibility=to_excise, prob=prob_excise, product='excision') # Administer excision
+    excision    = hpv.treat_delay(eligibility=to_excise, prob=prob_treat, product='excision') # Administer excision
     
     
-    
-    ## Apply it to the sim
+    ## Apply it to a Nigeria sim
     sim = make_nigeria_sim(interventions = interventions + [screen, triage, assign_tx, ablation, excision], vax=vax, label = label, **kwargs)
     # If vax = False, then vx =[], so not included in interventions
     # If vax=True, then vx = an intevention, is concatenated with the other interventions
     
-    
     return sim
 
 # %%
-
-# Sanity check - for this i put all the probabilites to 1
+# Sanity check - expect these to be the same
 standard_sim = make_nigeria_sim()
-prob_zero = add_screening(age_range=[25,64], label = 'prob screen to 0', prob_screen = 0)
-# Expect these to be the same , but they're not ...
+prob_zero = add_screening(age_range=[25,64], label = 'prob screen to 0', prob = 0)
 
-# At least they're not according to multisim
-another_sim = make_nigeria_sim()
-hpv.MultiSim([standard_sim,another_sim]).run().plot()
-# Okay multisim doesn't assign different seeds to the same sim so that can't be the issue
+hpv.MultiSim([standard_sim, prob_zero]).run().plot()
 
 
+# %%
 
-prob_6 = add_screening(age_range=[25,64], label = 'prob screen to 0.6', prob_screen = 0.6)
-prob_9 = add_screening(age_range=[25,64], label = 'prob screen to 0.9', prob_screen = 0.9)
-
-prob_one =  add_screening(age_range=[25,64], label = 'prob screen to 1', prob_screen = 1)
-
-
-
-
-hpv.MultiSim([standard_sim, prob_zero, prob_one, prob_6, prob_9]).run().plot()
-# Not the same so something wrong here
-
-print(standard_sim['interventions'])
-print(prob_zero['interventions'])
-
+test_fn= add_screening(age_range=[25,64], label ='23 vax')
+test_fn.run()
+test_fn.plot()
 
 
 # %%
@@ -113,10 +96,7 @@ print(prob_zero['interventions'])
 # # Not sure if you can iclude your own inventions on top of this screening strategy
 
 
-## Think runs fine
-test_fn= add_screening(age_range=[25,64], label ='23 vax')
-test_fn.run()
-test_fn.plot()
+# ## Think runs fine
 
 # # Excluding the vax works fine|
 # test_fn2= add_screening(age_range=[25,64], label ='no 23 vax', vax=False)
@@ -131,7 +111,7 @@ test_fn.plot()
 # # Now I've made sure vaccination isn't being applied twice it looks like it's working much better
 # %% check Oct 2023 vaccination isn't being applied twice
 
-print(test_fn['interventions'])
+# print(test_fn['interventions'])
 # # [hpv.routine_vx(product=quadrivalent, prob=None, age_range=[9, 14], sex=0, eligibility=None, label=None), 
 # # Now only showing this vaccination once so that's good
 
