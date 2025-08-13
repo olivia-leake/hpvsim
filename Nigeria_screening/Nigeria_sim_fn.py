@@ -6,6 +6,7 @@ Created on Thu Jul 17 10:00:57 2025
 @author: olivialeake
 """
 import hpvsim as hpv
+import numpy as np
 
 
 # Make a Nigeria sim function
@@ -15,9 +16,16 @@ def make_nigeria_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
     Create a Nigeria parameterised simulation
     '''
     
-    # First add in the vaccination introduced in Oct 2023 to 9-14 year olds. This is a yearly vaccination
+    # First add in the vaccination introduced in Oct 2023 to 9-14 year olds. This is a yearly vaccination. 
+    # For fist 10 years 70% of target recieve vaccine, this steps up to 80% thereafter
     if vax == True:
-        vx = [hpv.routine_vx(prob=0.9, start_year = 2024, age_range=[9,14], product='quadrivalent')] # Needs be a list so it can concatenate with interventions
+        
+        vx = [hpv.routine_vx(
+            product='quadrivalent',
+            prob=[0.7]* (10) + [0.8]* (16),
+            years=np.arange(2024, 2050)
+        )] # Needs be a list so it can concatenate with interventions
+        
     else: vx = None
     
     
@@ -121,6 +129,10 @@ multisim.plot() # plots the mean rather than a comparison
 
 # %% DEFAULTS
 
+# Defualt 
+ # pars['debut']           = dict(f=dict(dist='normal', par1=15.0, par2=2.1), # Location-specific data should be used here if possible
+ #                                m=dict(dist='normal', par1=17.6, par2=1.8))
+
 # Beta default is 0.25
 
 # dur_pship   = dict(m=dict(dist='neg_binomial', par1=80, par2=3), # This gives: mar_dur = {'0-5y': 0.015, '5-10y': 0.025, '10-20y':0.06, '20-50y':0.25, '50+':0.65}
@@ -153,10 +165,10 @@ multisim.plot() # plots the mean rather than a comparison
 
 
 
-# # Works alone
-# sim1 = make_nigeria_sim(label = 'no vax 9 to 10, vax 9 to 14')
-# sim1.run()
-# sim1.plot()
+# Works alone
+sim1 = make_nigeria_sim(label = 'no vax 9 to 10, vax 9 to 14')
+sim1.run()
+sim1.plot()
 
 # # Works changing random seed
 # sim2 = make_nigeria_sim(rand_seed = 2)
@@ -170,12 +182,12 @@ multisim.plot() # plots the mean rather than a comparison
 # sim3['location'] # india
 
 
-# # Accepts interventions
-# vx1 = hpv.routine_vx(prob=0.6, start_year=2015, age_range=[9,10], product='bivalent')
-# sim4 = make_nigeria_sim(interventions = [vx1], label = 'vax 9 to 10 and vax 9 to 14')
-# sim4.run()
-# sim4.plot()
-# sim4['interventions'] 
+# Accepts interventions
+vx1 = hpv.routine_vx(prob=0.6, start_year=2015, age_range=[9,10], product='bivalent')
+sim4 = make_nigeria_sim(interventions = [vx1], label = 'vax 9 to 10 and vax 9 to 14')
+sim4.run()
+sim4.plot()
+sim4['interventions'] 
 # # Out[134]: 
 # # [hpv.routine_vx(product=quadrivalent, prob=None, age_range=[9, 14], sex=0, eligibility=None, label=None),
 # #  hpv.routine_vx(product=bivalent, prob=None, age_range=[9, 10], sex=0, eligibility=None, label=None)]
@@ -205,8 +217,8 @@ multisim.plot() # plots the mean rather than a comparison
 
 # # Now let's compare both sim1 and sim4 to themselves but with the vax in 2024 removed
 # # sim1 no vax
-# sim1_nv =make_nigeria_sim(vax=False, label = 'no vax at all')
-# sim1_nv.run()
+sim1_nv =make_nigeria_sim(vax=False, label = 'no vax at all')
+sim1_nv.run().plot()
 # sim4_nv = make_nigeria_sim(vax=False, interventions = [vx1], label = 'vax 9 to 10 and no vax 9 to 14')
 # sim4_nv.run()
 

@@ -77,17 +77,17 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
 
 # %%
 # Sanity check - expect these to be the same
-standard_sim = make_nigeria_sim()
-prob_zero = add_screening(age_range=[25,64], label = 'prob screen to 0', prob = 0)
+# standard_sim = make_nigeria_sim()
+# prob_zero = add_screening(age_range=[25,64], label = 'prob screen to 0', prob = 0)
 
-hpv.MultiSim([standard_sim, prob_zero]).run().plot()
+# hpv.MultiSim([standard_sim, prob_zero]).run().plot()
 
 
 # %%
 
-test_fn= add_screening(age_range=[25,64], label ='23 vax')
-test_fn.run()
-test_fn.plot()
+# test_fn= add_screening(age_range=[25,64], label ='23 vax')
+# test_fn.run()
+# test_fn.plot()
 
 
 # %%
