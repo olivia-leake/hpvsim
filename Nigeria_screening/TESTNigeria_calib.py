@@ -23,6 +23,7 @@ import hpvsim as hpv
 years=np.arange(2020,2025)
 # array([2020, 2021, 2022, 2023, 2024])
 
+vx0 = [hpv.routine_vx(prob=0.9, start_year = 2024, years=None, age_range=[9,14], product='quadrivalent')]
 
 vx = [hpv.routine_vx(prob=0.9, start_year = 2024, end_year=2050, years=None, age_range=[9,14], product='quadrivalent')]
 
@@ -30,10 +31,13 @@ vx2 = [hpv.routine_vx(prob=0.9, start_year=2020, end_year=2024, years=np.arange(
 
 vx3 = [hpv.routine_vx(prob=0.9, start_year=None, end_year=None, years=np.arange(2020,2025), age_range=[9,14], product='quadrivalent')]
 
-sim=hpv.Sim(interventions = vx2, end =2050)
+sim=hpv.Sim(interventions = vx0, end =2050)
 sim.run()
 
 print(sim['interventions'])
+
+
+# %%
 
 
 # [best,lower,upper]

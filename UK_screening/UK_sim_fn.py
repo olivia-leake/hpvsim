@@ -9,6 +9,7 @@ Created on Wed Aug 13 18:35:17 2025
 import hpvsim as hpv
 import numpy as np
 
+
 # Make a UK sim function
 
 def make_uk_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
@@ -17,31 +18,48 @@ def make_uk_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
     '''
     # Note the default is to apply the sim to girls. wonder if there is a setting to extend to boys?
 
+    # Bivalent Vaccination first introduced for girls 12-13 (3 dose)
+    # Switched to quadrivalent in 2012
+    # Reduced to 2 dose in 2014
+    # Extended to boys aged 12-13 in 2019
+    # Reduced to 1 dose in 2023
     
-
     
-    # First add in the vaccination introduced in Oct 2023 to 9-14 year olds. This is a yearly vaccination. 
-    # For fist 10 years 70% of target recieve vaccine, this steps up to 80% thereafter
     if vax == True:
         
-        vx1 = [hpv.routine_vx(product='quadrivalent', prob=[0.7]* (10) + [0.8]* (16), years=np.arange(2024, 2050) )] # Needs be a list so it can concatenate with interventions
+        # Each vx needs be a list so it can concatenate with additional interventions
         
-        vx2 = hpv.routine_vx(product='bivalent', age_range=[9,10], prob=0.9, sex=[0,1], years=np.arange(2020,2025)) # Vaccinate boys and girls
+        vx08 = [hpv.routine_vx(product='bivalent3', age_range=[12,13], prob=0.85, years=np.arange(2008,2012))]
         
+        # Does this administer just the 3rd dose? or all 3 doses?
         
+        vx12 = [hpv.routine_vx(product='quadrivalent3', age_range=[12,13], prob=0.85, years=np.arange(2012,2014))]
+
+        vx14 = [hpv.routine_vx(product='quadrivalent2', age_range=[12,13], prob=0.85, years=np.arange(2014,2019))]
         
-    else: vx = None
+        vx19 = [hpv.routine_vx(product='quadrivalent2', age_range=[12,13], prob=0.85 , sex=[0,1], years=np.arange(2019,2023))] # Vaccinate boys and girls
+        
+        vx23 = [hpv.routine_vx(product='quadrivalent', age_range=[12,13], prob=0.85 , sex=[0,1], years=np.arange(2023,2050))] # Vaccinate boys and girls
+       
+        
+       # For now removing the choice to remove the vaccination
+       
+    # else: vx = None
     
     
-    # Ensure vx and interventions are lists (or None)
-    if vx is None and interventions is None:
-        combined_interventions = None
+    # # Ensure vx and interventions are lists (or None)
+    # if vx is None and interventions is None:
+    #     combined_interventions = None
+    # else:
+    #     vx = vx or [] # if vx and interventions are both not None, then vx will either be the list that was passed, or is no list was passed, it will default to empty list. You won't have two empty lists, since it both were none would default to none
+    #     interventions = interventions or []
+    
+    if interventions == None: 
+        combined_interventions = vx08 + vx12 + vx14 + vx19 + vx23
     else:
-        vx = vx or [] # if vx and interventions are both not None, then vx will either be the list that was passed, or is no list was passed, it will default to empty list. You won't have two empty lists, since it both were none would default to none
-        interventions = interventions or []
-        combined_interventions = vx + interventions
-
-
+         combined_interventions = vx08 + vx12 + vx14 + vx19 + vx23 + interventions
+         
+         
     if rand_seed is None:
         rand_seed = 1
     
@@ -57,9 +75,9 @@ def make_uk_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
         )
     
     location_pars = dict(
-        location = 'Nigeria',
+        location = 'united kingdom',
         network = 'default',     # Use layered network rather than random,
-        beta = 0.3 # Not a genotype parameter so specify it here. TEMP, update with Fabian parameters
+        beta = 0.3 # Not a genotype parameter so specify it here.  # TODO: TEMP, update with Fabian parameters
         )
     
 # Beta default is 0.25
@@ -67,13 +85,15 @@ def make_uk_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
     
     # Parameters specified by layer
     layer_pars = dict(
-       # f_partners = None,
-       # m_partners = None, #Leave as default for now as using default network and don't have the info for married and casual
+       # f_partners = None,(
+       # m_partners = None, # TODO: Leave as default for now as using default network and don't have the info for married and casual) (poisson, additonal))
        # act = None
        # age_act_pars = None
        # layer_probs = None 
        # dur_pship = None # Don't have info for this
-        condoms = dict(m=0.016, c=0.185)
+       debut         = dict(f=dict(dist='normal', par1=17, par2=2.5), # Location-specific data should be used here if possible
+                                      m=dict(dist='normal', par1=17, par2=2.5)),
+        condoms = dict(m=0.5, c=0.49) 
             )
     
     # layer_defaults['default']['mixing'], layer_defaults['default']['layer_probs'] = get_mixing('default')
@@ -84,16 +104,16 @@ def make_uk_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
     
     # Network paramters from Fabian calibration
     net_pars = {
-        'f_cross_layer' : 0.05, # temporary until get Fabian calib
+        'f_cross_layer' : 0.05, # TODO: temporary until get Fabian calib
         'm_cross_layer' : 0.15 # temporary until get Fabian calib
         }
     
     
     # Combine the dictionaries
-    Nigeria_pars = {**location_pars, **layer_pars, **sim_pars, **net_pars}
+    UK_pars = {**location_pars, **layer_pars, **sim_pars, **net_pars}
 
 
-    Nigeria_sim = hpv.Sim(pars=Nigeria_pars, rand_seed = rand_seed, interventions= combined_interventions, **kwargs)
+    UK_sim = hpv.Sim(pars=UK_pars, rand_seed = rand_seed, interventions= combined_interventions, **kwargs)
 
     
     
@@ -109,7 +129,18 @@ def make_uk_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
 
 
     # Assign the genotype parameters to the simulation
-    Nigeria_sim.genotype_pars = genotype_pars
+    UK_sim.genotype_pars = genotype_pars
     
 
-    return Nigeria_sim
+    return UK_sim
+
+# %%
+
+sim = make_uk_sim()
+sim.run()
+sim.plot()
+
+sim['interventions'] 
+
+
+

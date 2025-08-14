@@ -9,6 +9,7 @@ import hpvsim as hpv
 import numpy as np
 
 
+
 # Make a Nigeria sim function
 
 def make_nigeria_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
@@ -23,7 +24,8 @@ def make_nigeria_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
         vx = [hpv.routine_vx(
             product='quadrivalent',
             prob=[0.7]* (10) + [0.8]* (16),
-            years=np.arange(2024, 2050)
+            years=np.arange(2024, 2050),
+            age_range = [9,14]
         )] # Needs be a list so it can concatenate with interventions
         
     else: vx = None

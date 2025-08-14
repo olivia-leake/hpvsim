@@ -12,18 +12,25 @@ import numpy as np
 import sciris as sc
 sys.path.append('/Users/olivialeake/Documents/BSP project/HPV Project/hpvsim')
 
+from UK_screening.UK_sim_fn import make_uk_sim
 import hpvsim as hpv
 
 # Discovered can calibtrate fine, but cannot plot
 
-sim = hpv.Sim(end = 2050) # TODO: update using a UK sim
+sim = make_uk_sim() # TODO: update using a UK sim
 
 # TODO: get it to work with interventions included
+
+# %%
+# Test with simpler sim 
+
+sim =hpv.Sim()
 
 vx = [hpv.routine_vx(prob=0.9, start_year = 2001, end_year=2050, age_range=[9,14], product='quadrivalent')]
 
 sim=hpv.Sim(interventions = vx, end =2050)
 
+# %%
 
 
 # [best,lower,upper]

@@ -17,12 +17,13 @@ sys.path.append('/Users/olivialeake/Documents/BSP project/HPV Project/hpvsim')
 import hpvsim as hpv
 
 from Nigeria_screening.Nigeria_sim_fn import make_nigeria_sim
+from UK_screening.UK_sim_fn import make_uk_sim
 
 # %%
 
 
 
-def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interventions=None, prob_screen=0.3, prob_triage=1, prob_assign=1, prob_ablate=0.9, prob_excise=0.9, **kwargs): 
+def add_screening(location, age_range, label, vax=True, years=np.arange(2026,2050), interventions=None, prob_screen=0.3, prob_triage=1, prob_assign=1, prob_ablate=0.9, prob_excise=0.9, **kwargs): 
     #Start year is 2026 by default, and increases yearly
     
     # # Defaults
@@ -67,15 +68,32 @@ def add_screening(age_range, label, vax=True, years=np.arange(2026,2050), interv
     to_excise   = lambda sim: sim.get_intervention('assign_tx').outcomes['excision'] # Define who's eligible for excision
     excision    = hpv.treat_delay(eligibility=to_excise, prob=prob_excise, product='excision') # Administer excision
     
+    if location == 'nigeria':
     
+        ## Apply it to the sim
+        sim = make_nigeria_sim(interventions = interventions + [screen, triage, assign_tx, ablation, excision], vax=vax, label = label, **kwargs)
+        # If vax = False, then vx =[], so not included in interventions
+        # If vax=True, then vx = an intevention, is concatenated with the other interventions
     
-    ## Apply it to the sim
-    sim = make_nigeria_sim(interventions = interventions + [screen, triage, assign_tx, ablation, excision], vax=vax, label = label, **kwargs)
-    # If vax = False, then vx =[], so not included in interventions
-    # If vax=True, then vx = an intevention, is concatenated with the other interventions
+    elif location == 'uk':
+        
+        sim = make_uk_sim(interventions = interventions + [screen, triage, assign_tx, ablation, excision], vax=vax, label = label, **kwargs)
+        
+    else:
+        raise ValueError("Location must be 'uk' or 'nigeria'")
     
     
     return sim
+
+# %%
+
+# # Test if location update works
+
+# uk = add_screening('uk', [9,14], 'uk')
+# uk['interventions']
+
+# czechia = add_screening('czechia', [9,10], 'czechia')
+# # ValueError: Location must be 'uk' or 'nigeria' 
 
 # %%
 

@@ -21,7 +21,7 @@ from Nigeria_screening.Nigeria_sim_fn import make_nigeria_sim
 
 # Make the sim that will calibrate to data. 
 # This only works when vax =False  ????? Doesn't matter for nigeria as data is before vaccination
-sim = make_nigeria_sim(vax=True)
+sim = make_nigeria_sim(vax=False)
 
 # Note this sim DOES contain genotype parameters, beta parameters and f/m_cross layer already - all pars we want
 # to calibrate. This doesn't matter, as calib uses the best pars specified here anyways as first guess
