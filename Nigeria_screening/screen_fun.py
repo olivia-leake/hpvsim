@@ -6,6 +6,8 @@ Created on Fri Jul 18 10:14:25 2025
 @author: olivialeake
 """
 
+# NOTE : HAVE USED SAME NAMES FOR SAVING THE PLOTS FOR UK AS NIGERIA - THIS IS FINE AS LONG AS RUN EACH CELL INDIVIDUALY
+
 # Create a screening function to be used to make scripts easier to read
 
 import sys
@@ -403,7 +405,7 @@ for sim in comp1.sims:
 
 
 # save fig to mac. Don't forget .png !
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 1.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare uk strat 1.png',
             fig = comp_strat1)
 
 # Doesn't seem to be much difference betweem them
@@ -433,7 +435,7 @@ comp2 = hpv.MultiSim([orig, strat2_1,strat2_2,strat2_3])
 comp2.run()
 comp_strat2 = comp2.plot()
     
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 2.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare uk strat 2.png',
             fig = comp_strat2)
 
 # Overall seems slightly worse to start screening at 25 rather than 18
@@ -459,7 +461,7 @@ comp3.run()
 comp_strat3 = comp3.plot()
 # Again should run multiple sims and average them
 
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 3.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare uk strat 3.png',
             fig = comp_strat3)
 
 
@@ -493,7 +495,7 @@ comp_strat7 = comp7.plot()
 
 
 # save fig to mac. Don't forget .png !
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 1 with no vax.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare uk strat 1 with no vax.png',
             fig = comp_strat7)
 
 # Doesn't seem to be much difference betweem them
@@ -523,7 +525,7 @@ comp8 = hpv.MultiSim([orig_nv, strat2_1_nv, strat2_2_nv, strat2_3_nv])
 comp8.run()
 comp_strat8 = comp8.plot()
     
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 2 with no vax.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare uk strat 2 with no vax.png',
             fig = comp_strat8)
 
 # Overall seems slightly worse to start screening at 25 rather than 18
@@ -549,7 +551,7 @@ comp9.run()
 comp_strat9 = comp9.plot()
 # Again should run multiple sims and average them
 
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 3 with no vax.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare uk strat 3 with no vax.png',
             fig = comp_strat9)
 
 
@@ -564,7 +566,7 @@ comp4.run()
 comp_strat4 = comp4.plot()
 comp4.brief()
 
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 2.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for uk interval 2.png',
             fig = comp_strat4)
     
 # Compare ages for interval 5
@@ -572,7 +574,7 @@ comp5 = hpv.MultiSim([orig, strat1_2, strat2_2, strat3_2])
 comp5.run()
 comp_strat5 = comp5.plot()
 
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 5.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for uk interval 5.png',
             fig = comp_strat5)
 
 # Compare ages for interval 10
@@ -580,7 +582,7 @@ comp6 = hpv.MultiSim([orig, strat1_3, strat2_3, strat3_3])
 comp6.run()
 comp_strat6 = comp6.plot()   
 
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 10.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for uk interval 10.png',
             fig = comp_strat6)
 
 # %%
@@ -594,7 +596,7 @@ comp10.run()
 comp_strat10 = comp10.plot()
 comp4.brief()
     
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 2 with no vax.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for uk interval 2 with no vax.png',
             fig = comp_strat10)
 
 # Compare ages for interval 5, no vax
@@ -602,7 +604,7 @@ comp11 = hpv.MultiSim([orig_nv, strat1_2_nv, strat2_2_nv, strat3_2_nv])
 comp11.run()
 comp_strat11 = comp11.plot()
 
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 5 with no vax.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for uk interval 5 with no vax.png',
             fig = comp_strat11)
 
 # Compare ages for interval 10, no vax
@@ -610,7 +612,7 @@ comp12 = hpv.MultiSim([orig_nv, strat1_3_nv, strat2_3_nv, strat3_3_nv])
 comp12.run()
 comp_strat12 = comp12.plot()   
 
-hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 10 with no vax.png',
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for uk interval 10 with no vax.png',
             fig = comp_strat12)
 
 
