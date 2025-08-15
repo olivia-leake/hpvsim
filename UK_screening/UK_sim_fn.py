@@ -13,6 +13,7 @@ import numpy as np
 # Make a UK sim function
 
 def make_uk_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
+    
     '''
     Create a UK parameterised simulation
     '''
@@ -24,40 +25,37 @@ def make_uk_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
     # Extended to boys aged 12-13 in 2019
     # Reduced to 1 dose in 2023
     
+        
+    # Each vx needs be a list so it can concatenate with additional interventions
     
-    if vax == True:
-        
-        # Each vx needs be a list so it can concatenate with additional interventions
-        
-        vx08 = [hpv.routine_vx(product='bivalent3', age_range=[12,13], prob=0.85, years=np.arange(2008,2012))]
-        
-        # Does this administer just the 3rd dose? or all 3 doses?
-        
-        vx12 = [hpv.routine_vx(product='quadrivalent3', age_range=[12,13], prob=0.85, years=np.arange(2012,2014))]
-
-        vx14 = [hpv.routine_vx(product='quadrivalent2', age_range=[12,13], prob=0.85, years=np.arange(2014,2019))]
-        
-        vx19 = [hpv.routine_vx(product='quadrivalent2', age_range=[12,13], prob=0.85 , sex=[0,1], years=np.arange(2019,2023))] # Vaccinate boys and girls
-        
-        vx23 = [hpv.routine_vx(product='quadrivalent', age_range=[12,13], prob=0.85 , sex=[0,1], years=np.arange(2023,2050))] # Vaccinate boys and girls
+    vx08 = [hpv.routine_vx(product='bivalent3', age_range=[12,13], prob=0.85, years=np.arange(2008,2012))]
+    
+    vx12 = [hpv.routine_vx(product='quadrivalent3', age_range=[12,13], prob=0.85, years=np.arange(2012,2014))]
+    
+    vx14 = [hpv.routine_vx(product='quadrivalent2', age_range=[12,13], prob=0.85, years=np.arange(2014,2019))]
+    
+    vx19 = [hpv.routine_vx(product='quadrivalent2', age_range=[12,13], prob=0.85 , sex=[0,1], years=np.arange(2019,2023))] # Vaccinate boys and girls
+    
+    vx23 = [hpv.routine_vx(product='quadrivalent', age_range=[12,13], prob=0.85 , sex=[0,1], years=np.arange(2023,2050))] # Vaccinate boys and girls
+    
+    if vax == True: 
+        vx = vx08 + vx12 + vx14 + vx19 + vx23
        
-        
-       # For now removing the choice to remove the vaccination
-       
-    # else: vx = None
+    else: vx = None
     
     
     # # Ensure vx and interventions are lists (or None)
-    # if vx is None and interventions is None:
-    #     combined_interventions = None
-    # else:
-    #     vx = vx or [] # if vx and interventions are both not None, then vx will either be the list that was passed, or is no list was passed, it will default to empty list. You won't have two empty lists, since it both were none would default to none
-    #     interventions = interventions or []
+    if vx is None and interventions is None:
+        combined_interventions = None
+    else:
+        vx = vx or [] # if vx and interventions are both not None, then vx will either be the list that was passed, or is no list was passed, it will default to empty list. You won't have two empty lists, since it both were none would default to none
+        interventions = interventions or []
     
     if interventions == None: 
-        combined_interventions = vx08 + vx12 + vx14 + vx19 + vx23
+        combined_interventions = vx
     else:
-         combined_interventions = vx08 + vx12 + vx14 + vx19 + vx23 + interventions
+         combined_interventions = vx + interventions
+         
          
          
     if rand_seed is None:
@@ -142,5 +140,7 @@ sim.plot()
 
 sim['interventions'] 
 
-
+sim_nv = make_uk_sim(vax=False)
+sim_nv.run().plot()
+sim_nv['interventions'] 
 
