@@ -16,7 +16,7 @@ sys.path.append('/Users/olivialeake/Documents/BSP project/HPV Project/hpvsim')
 
 from UK_screening.UK_sim_fn import make_uk_sim
 
-from Nigeria_screening.screen_fn import add_screening
+from Nigeria_screening.screen_fun import add_screening
 # The add_screening function works for both UK and Nigeria, you must specify the location though
 
 import hpvsim as hpv

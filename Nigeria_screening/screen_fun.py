@@ -95,7 +95,7 @@ def add_screening(location, age_range, label, vax=True, years=np.arange(2026,205
 
 
 
-# %% Nigeria screening
+# %% NIGERIA SCREENING
 
 # All these sims include the vaccination introduced in Oct 2023
 
@@ -354,6 +354,270 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 
 
+
+
+
+
+
+
+# %%
+
+# %% UK SCREENING
+
+# All these sims include the vaccination introduced in Oct 2023
+
+orig = make_uk_sim(rand_seed = 1)
+
+strat1_1 = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], 
+                        years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2')
+
+strat1_2 = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], 
+                        years = np.arange(2026,2050,5),label = 'Age: 18-64, Interval=5')
+
+strat1_3 = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64],
+                        years = np.arange(2026,2050,10),label = 'Age: 18-64, Interval=10')
+
+# orig.run()
+# strat1_1.run()
+# strat1_2.run()
+# strat1_3.run()
+
+# Compare screening intervals for age range 18-64
+comp1 = hpv.MultiSim([orig, strat1_1,strat1_2,strat1_3])
+comp1.run()
+comp_strat1 = comp1.plot()
+
+
+# Check the results of the plots
+for sim in comp1.sims:
+    sim.brief()
+    
+# Sim("Sim 0"; 1990 to 2050; pop: 10000 default; epi: 1.21454e+09⚙, 1.03663e+06♋︎)
+# Sim("Age: 18-64, Interval=2"; 1990 to 2050; pop: 10000 default; epi: 1.16455e+09⚙, 803820♋︎)
+# Sim("Age: 18-64, Interval=5"; 1990 to 2050; pop: 10000 default; epi: 1.16341e+09⚙, 809569♋︎)
+# Sim("Age: 18-64, Interval=10"; 1990 to 2050; pop: 10000 default; epi: 1.16341e+09⚙, 809569♋︎)
+#
+# There is a difference between strat1_1 and _2,_3 so know something has changed - tells me something probs wrong with 
+# screening or vaccination itself
+
+
+
+# save fig to mac. Don't forget .png !
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 1.png',
+            fig = comp_strat1)
+
+# Doesn't seem to be much difference betweem them
+# Also changed the intervals in their T5 , and didn't see much difference there either
+# Python crashed but you can see this in the image taken on my phone 18/07/25
+
+# Why am I seeing triangluar shapes for cancer incidence per age
+
+
+# %%
+
+orig = make_uk_sim(rand_seed = 1)
+
+strat2_1 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64], 
+                        years = np.arange(2026,2050,2), label = 'Age: 25-64, Interval=2')
+
+strat2_2 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64],
+                        years = np.arange(2026,2050,5),label = 'Age: 25-64, Interval=5')
+
+strat2_3 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64],
+                        years = np.arange(2026,2050,10),label = 'Age: 25-64, Interval=10')
+
+
+
+# Compare screening intervals for age range 25-64
+comp2 = hpv.MultiSim([orig, strat2_1,strat2_2,strat2_3])
+comp2.run()
+comp_strat2 = comp2.plot()
+    
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 2.png',
+            fig = comp_strat2)
+
+# Overall seems slightly worse to start screening at 25 rather than 18
+# but also should run multiple sims and take the mean 
+# %%
+    
+orig = make_uk_sim(rand_seed = 1)
+
+strat3_1 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100], 
+                        years = np.arange(2026,2050,2), label = 'Age: 25-100, Interval=2')
+
+strat3_2 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100],
+                        years = np.arange(2026,2050,5),label = 'Age: 25-100, Interval=5')
+
+strat3_3 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100],
+                        years = np.arange(2026,2050,10),label = 'Age: 25-100, Interval=10')
+
+
+
+# Compare screening intervals for age range 25-64
+comp3 = hpv.MultiSim([orig, strat3_1,strat3_2,strat3_3])
+comp3.run()
+comp_strat3 = comp3.plot()
+# Again should run multiple sims and average them
+
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 3.png',
+            fig = comp_strat3)
+
+
+    
+# %%
+# %%
+
+# Now going to do the same thing but with all vaccination removed. 
+
+orig_nv = make_uk_sim(rand_seed = 1, vax=False)
+
+strat1_1_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], vax=False,
+                        years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2')
+
+strat1_2_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], vax=False,
+                        years = np.arange(2026,2050,5),label = 'Age: 18-64, Interval=5')
+
+strat1_3_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], vax=False,
+                        years = np.arange(2026,2050,10),label = 'Age: 18-64, Interval=10')
+
+# orig.run()
+# strat1_1_nv.run()
+# strat1_2_nv.run()
+# strat1_3_nv.run()
+
+# Compare screening intervals for age range 18-64
+comp7 = hpv.MultiSim([orig_nv, strat1_1_nv, strat1_2_nv, strat1_3_nv])
+comp7.run()
+comp_strat7 = comp7.plot()
+
+
+
+# save fig to mac. Don't forget .png !
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 1 with no vax.png',
+            fig = comp_strat7)
+
+# Doesn't seem to be much difference betweem them
+# Also changed the intervals in their T5 , and didn't see much difference there either
+# Python crashed but you can see this in the image taken on my phone 18/07/25
+
+# Why am I seeing triangluar shapes for cancer incidence per age
+
+
+# %%
+
+orig_nv = make_uk_sim(rand_seed = 1, vax=False)
+
+strat2_1_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64], vax=False,
+                        years = np.arange(2026,2050,2), label = 'Age: 25-64, Interval=2')
+
+strat2_2_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64],vax=False,
+                        years = np.arange(2026,2050,5),label = 'Age: 25-64, Interval=5')
+
+strat2_3_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64],vax=False,
+                        years = np.arange(2026,2050,10),label = 'Age: 25-64, Interval=10')
+
+
+
+# Compare screening intervals for age range 25-64
+comp8 = hpv.MultiSim([orig_nv, strat2_1_nv, strat2_2_nv, strat2_3_nv])
+comp8.run()
+comp_strat8 = comp8.plot()
+    
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 2 with no vax.png',
+            fig = comp_strat8)
+
+# Overall seems slightly worse to start screening at 25 rather than 18
+# but also should run multiple sims and take the mean 
+# %%
+    
+orig_nv = make_uk_sim(rand_seed = 1, vax=False)
+
+strat3_1_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100], vax=False,
+                        years = np.arange(2026,2050,2), label = 'Age: 25-100, Interval=2')
+
+strat3_2_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100],vax=False,
+                        years = np.arange(2026,2050,5),label = 'Age: 25-100, Interval=5')
+
+strat3_3_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100],vax=False,
+                        years = np.arange(2026,2050,10),label = 'Age: 25-100, Interval=10')
+
+
+
+# Compare screening intervals for age range 25-64
+comp9 = hpv.MultiSim([orig_nv, strat3_1_nv,strat3_2_nv,strat3_3_nv])
+comp9.run()
+comp_strat9 = comp9.plot()
+# Again should run multiple sims and average them
+
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare n strat 3 with no vax.png',
+            fig = comp_strat9)
+
+
+# %%
+# %%
+
+# Not getting a difference in the sims.. going to compare same interval different ages.
+
+# Compare ages for interval 2
+comp4 = hpv.MultiSim([orig, strat1_1, strat2_1, strat3_1])
+comp4.run()
+comp_strat4 = comp4.plot()
+comp4.brief()
+
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 2.png',
+            fig = comp_strat4)
+    
+# Compare ages for interval 5
+comp5 = hpv.MultiSim([orig, strat1_2, strat2_2, strat3_2])
+comp5.run()
+comp_strat5 = comp5.plot()
+
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 5.png',
+            fig = comp_strat5)
+
+# Compare ages for interval 10
+comp6 = hpv.MultiSim([orig, strat1_3, strat2_3, strat3_3]) 
+comp6.run()
+comp_strat6 = comp6.plot()   
+
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 10.png',
+            fig = comp_strat6)
+
+# %%
+# %%
+
+# Now compare the same interval different ages, where the 2023 vaxination is removed
+
+# Compare ages for interval 2, no vax
+comp10 = hpv.MultiSim([orig_nv, strat1_1_nv, strat2_1_nv, strat3_1_nv])
+comp10.run()
+comp_strat10 = comp10.plot()
+comp4.brief()
+    
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 2 with no vax.png',
+            fig = comp_strat10)
+
+# Compare ages for interval 5, no vax
+comp11 = hpv.MultiSim([orig_nv, strat1_2_nv, strat2_2_nv, strat3_2_nv])
+comp11.run()
+comp_strat11 = comp11.plot()
+
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 5 with no vax.png',
+            fig = comp_strat11)
+
+# Compare ages for interval 10, no vax
+comp12 = hpv.MultiSim([orig_nv, strat1_3_nv, strat2_3_nv, strat3_3_nv]) 
+comp12.run()
+comp_strat12 = comp12.plot()   
+
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/uk/compare ages for n interval 10 with no vax.png',
+            fig = comp_strat12)
+
+
+
+
+
+# %%
 
 
 
