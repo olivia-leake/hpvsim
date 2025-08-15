@@ -678,7 +678,7 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 
 
-# %%  Fabian session
+# %%  Fabian session - include sanity checks
 
 # orig = make_nigeria_sim(rand_seed = 1)
 

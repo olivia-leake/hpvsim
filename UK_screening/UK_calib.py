@@ -15,19 +15,9 @@ sys.path.append('/Users/olivialeake/Documents/BSP project/HPV Project/hpvsim')
 from UK_screening.UK_sim_fn import make_uk_sim
 import hpvsim as hpv
 
-# Discovered can calibtrate fine, but cannot plot
 
-sim = make_uk_sim() # TODO: update using a UK sim
+sim = make_uk_sim(vax=False) # TODO: Write about how chose to calibrate removing the vaccine since it won't make a difference
 
-
-# %%
-# Test with simpler sim 
-
-sim =hpv.Sim()
-
-vx = [hpv.routine_vx(prob=0.9, start_year = 2001, end_year=2050, age_range=[9,14], product='quadrivalent')]
-
-sim=hpv.Sim(interventions = vx, end =2050)
 
 # %%
 

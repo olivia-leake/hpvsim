@@ -134,13 +134,15 @@ def make_uk_sim(interventions=None, rand_seed=None,vax=True, **kwargs):
 
 # %%
 
-sim = make_uk_sim()
-sim.run()
-sim.plot()
+# # Check vaccination can be removed properly
 
-sim['interventions'] 
+# sim = make_uk_sim()
+# sim.run()
+# sim.plot()
 
-sim_nv = make_uk_sim(vax=False)
-sim_nv.run().plot()
-sim_nv['interventions'] 
+# sim['interventions'] 
+
+# sim_nv = make_uk_sim(vax=False)
+# sim_nv.run().plot()
+# sim_nv['interventions'] 
 
