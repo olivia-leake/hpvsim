@@ -353,16 +353,37 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 # %%
 # %%
 
+# Compare vax vs no vax with no screening
+
+comp13 = hpv.MultiSim([orig, orig_nv])
+comp13.run()
+comp_strat13 = comp13.plot()
+
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/Nigeria/compare vax vs no vax for n : no screening.png',
+            fig = comp_strat13)
+# %%
+# %%
+
 # Put no vax and vax side by side
 
 # No screening no vax, no screening vax, screening vax, screening no vax 
 
-comp13 = hpv.MultiSim([strat1_1, strat1_1_nv])
-comp13.run()
-comp_strat13 = comp13.plot()
+comp14 = hpv.MultiSim([strat1_1, strat1_1_nv])
+comp14.run()
+comp_strat14 = comp14.plot()
 
 hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/Nigeria/compare vax vs no vax for n : strat 1_1 : ages 18-64, interval 2.png',
-            fig = comp_strat13)
+            fig = comp_strat14)
+
+## REALLY IMPORTANT PLOT
+
+# Can see that with screening implemented but no vaccination, you have a higher HPV prevalence, but this doesn't imply increased cancer prevalance
+# So in the prescence of screening, whilst the vaccination signigicantly decreases HPV incidence, actually screening with no vaccination is just as good
+# as protecting from cancer as screening with vaccination
+
+# This might suggest that it is sufficient to screen for cancer without vaccination in order to reduce cancer incidence
+# However this is only if we have correct treatments in place - and this would probably be more costly and time consuming than just 
+# vaccination in the first instance
 
 # %%
 
