@@ -23,18 +23,36 @@ from UK_screening.UK_sim_fn import make_uk_sim
 
 
 
-def add_screening(location, age_range, label, vax=True, years=np.arange(2026,2050), interventions=None, prob_screen=0.3, prob_triage=1, prob_assign=1, prob_ablate=0.9, prob_excise=0.9, **kwargs): 
-    # 
-    #Start year is 2026 by default, and increases yearly
-    
-    # # Defaults
+def add_screening(location, age_range, label, vax=True, years=np.arange(2026,2050), interventions=None, prob_screen=None, prob_triage=None, prob_assign=None, prob_ablate=None, prob_excise=None, **kwargs): 
+
+    # Start year is 2026 by default, and increases yearly
+
+    # DEFAULTS #TODO: look at this
     # prob = 0.6 # Could consider starting at 60% then increasing to 90% as becomes more popular) #0.6
     # prob_treat = 0.95 # Assume few woman would refuse treatment #0.95
     
     '''
     Create a new sim with a routine screening strategy
     Vaccination added in Oct 2023 is handled by make_nigeria_sim via vax=True/False
+    Similarly for UK
     '''
+    
+    # Allow for probabilities to be over-written
+    # Probabilities will be location specific
+    if location == 'nigeria':
+        prob_screen = prob_screen if prob_screen is not None else 0.3
+        prob_triage = prob_triage if prob_triage is not None else 1
+        prob_assign = prob_assign if prob_assign is not None else 1
+        prob_ablate = prob_ablate if prob_ablate is not None else 0.9
+        prob_excise = prob_excise if prob_excise is not None else 0.6
+
+    elif location == 'uk':
+        prob_screen = prob_screen if prob_screen is not None else 0.7
+        prob_triage = prob_triage if prob_triage is not None else 1
+        prob_assign = prob_assign if prob_assign is not None else 1
+        prob_ablate = prob_ablate if prob_ablate is not None else 0.9
+        prob_excise = prob_excise if prob_excise is not None else 0.9  # More likely to screen in UK
+    
     
     if interventions is None:
         interventions = []
@@ -88,8 +106,6 @@ def add_screening(location, age_range, label, vax=True, years=np.arange(2026,205
 
 
 # %%
-
-
 
 
 
@@ -848,5 +864,29 @@ comp_strat1 = comp.plot()
 #     # sim_int5.run()
 #     # # Okay this works
     
+# %%
+
+
+# # Test location prob update works
+
+# uk = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], 
+#                         years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2')
+
+# uk['interventions'] # excise prob = 0.14
+
+# nigeria = add_screening(location = 'nigeria', rand_seed = 1, age_range = [18,64], 
+#                         years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2')
+
+# nigeria['interventions'] # excise prob = 0.87
+
+# # Check can override
+
+# uk_ep = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], 
+#                         years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2',
+#                         prob_excise=0.5)
+
+# uk_ep['interventions'] # excise prob = 0.5
+
+# # Great this works
 
 
