@@ -101,7 +101,7 @@ def add_screening(location, age_range, label, vax=True, years=np.arange(2026,205
 
 # All these sims include the vaccination introduced in Oct 2023
 
-orig = make_nigeria_sim(rand_seed = 1)
+orig = make_nigeria_sim(rand_seed = 1, label = 'no screening')
 
 strat1_1 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [18,64], 
                         years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2')
@@ -150,7 +150,7 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 # %%
 
-orig = make_nigeria_sim(rand_seed = 1)
+orig = make_nigeria_sim(rand_seed = 1, label = 'no screening')
 
 strat2_1 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,64], 
                         years = np.arange(2026,2050,2), label = 'Age: 25-64, Interval=2')
@@ -175,7 +175,7 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 # but also should run multiple sims and take the mean 
 # %%
     
-orig = make_nigeria_sim(rand_seed = 1)
+orig = make_nigeria_sim(rand_seed = 1, label = 'no screening')
 
 strat3_1 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,100], 
                         years = np.arange(2026,2050,2), label = 'Age: 25-100, Interval=2')
@@ -205,16 +205,16 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 # Now going to do the same thing but with the vaccination in 2024 removed. 
 
-orig_nv = make_nigeria_sim(rand_seed = 1, vax=False)
+orig_nv = make_nigeria_sim(rand_seed = 1, vax=False, label = 'no screening, no vax')
 
 strat1_1_nv = add_screening(location = 'nigeria', rand_seed = 1, age_range = [18,64], vax=False,
-                        years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2')
+                        years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2, no vax')
 
 strat1_2_nv = add_screening(location = 'nigeria', rand_seed = 1, age_range = [18,64], vax=False,
-                        years = np.arange(2026,2050,5),label = 'Age: 18-64, Interval=5')
+                        years = np.arange(2026,2050,5),label = 'Age: 18-64, Interval=5, no vax')
 
 strat1_3_nv = add_screening(location = 'nigeria', rand_seed = 1, age_range = [18,64], vax=False,
-                        years = np.arange(2026,2050,10),label = 'Age: 18-64, Interval=10')
+                        years = np.arange(2026,2050,10),label = 'Age: 18-64, Interval=10, no vax')
 
 # orig.run()
 # strat1_1_nv.run()
@@ -241,16 +241,16 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 # %%
 
-orig_nv = make_nigeria_sim(rand_seed = 1, vax=False)
+orig_nv = make_nigeria_sim(rand_seed = 1, vax=False, label = 'no screening, no vax')
 
 strat2_1_nv = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,64], vax=False,
-                        years = np.arange(2026,2050,2), label = 'Age: 25-64, Interval=2')
+                        years = np.arange(2026,2050,2), label = 'Age: 25-64, Interval=2, no vax')
 
 strat2_2_nv = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,64],vax=False,
-                        years = np.arange(2026,2050,5),label = 'Age: 25-64, Interval=5')
+                        years = np.arange(2026,2050,5),label = 'Age: 25-64, Interval=5, no vax')
 
 strat2_3_nv = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,64],vax=False,
-                        years = np.arange(2026,2050,10),label = 'Age: 25-64, Interval=10')
+                        years = np.arange(2026,2050,10),label = 'Age: 25-64, Interval=10, no vax')
 
 
 
@@ -266,16 +266,16 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 # but also should run multiple sims and take the mean 
 # %%
     
-orig_nv = make_nigeria_sim(rand_seed = 1, vax=False)
+orig_nv = make_nigeria_sim(rand_seed = 1, vax=False, label = 'no screening, no vax')
 
 strat3_1_nv = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,100], vax=False,
-                        years = np.arange(2026,2050,2), label = 'Age: 25-100, Interval=2')
+                        years = np.arange(2026,2050,2), label = 'Age: 25-100, Interval=2, no vax')
 
 strat3_2_nv = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,100],vax=False,
-                        years = np.arange(2026,2050,5),label = 'Age: 25-100, Interval=5')
+                        years = np.arange(2026,2050,5),label = 'Age: 25-100, Interval=5, no vax')
 
 strat3_3_nv = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,100],vax=False,
-                        years = np.arange(2026,2050,10),label = 'Age: 25-100, Interval=10')
+                        years = np.arange(2026,2050,10),label = 'Age: 25-100, Interval=10, no vax')
 
 
 
@@ -350,6 +350,19 @@ comp_strat12 = comp12.plot()
 hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/Nigeria/compare ages for n interval 10 with no vax.png',
             fig = comp_strat12)
 
+# %%
+# %%
+
+# Put no vax and vax side by side
+
+# No screening no vax, no screening vax, screening vax, screening no vax 
+
+comp13 = hpv.MultiSim([strat1_1, strat1_1_nv])
+comp13.run()
+comp_strat13 = comp13.plot()
+
+hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf material/My plots/Nigeria/compare vax vs no vax for n : strat 1_1 : ages 18-64, interval 2.png',
+            fig = comp_strat13)
 
 # %%
 
@@ -368,7 +381,7 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 # All these sims include the vaccination introduced in Oct 2023
 
-orig = make_uk_sim(rand_seed = 1)
+orig = make_uk_sim(rand_seed = 1, label = 'no screening')
 
 strat1_1 = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], 
                         years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2')
@@ -417,7 +430,7 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 # %%
 
-orig = make_uk_sim(rand_seed = 1)
+orig = make_uk_sim(rand_seed = 1, label = 'no screening')
 
 strat2_1 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64], 
                         years = np.arange(2026,2050,2), label = 'Age: 25-64, Interval=2')
@@ -442,7 +455,7 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 # but also should run multiple sims and take the mean 
 # %%
     
-orig = make_uk_sim(rand_seed = 1)
+orig = make_uk_sim(rand_seed = 1, label = 'no screening')
 
 strat3_1 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100], 
                         years = np.arange(2026,2050,2), label = 'Age: 25-100, Interval=2')
@@ -471,16 +484,16 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 # Now going to do the same thing but with all vaccination removed. 
 
-orig_nv = make_uk_sim(rand_seed = 1, vax=False)
+orig_nv = make_uk_sim(rand_seed = 1, vax=False, label = 'no screening, no vax')
 
 strat1_1_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], vax=False,
-                        years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2')
+                        years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2, no vax')
 
 strat1_2_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], vax=False,
-                        years = np.arange(2026,2050,5),label = 'Age: 18-64, Interval=5')
+                        years = np.arange(2026,2050,5),label = 'Age: 18-64, Interval=5, no vax')
 
 strat1_3_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], vax=False,
-                        years = np.arange(2026,2050,10),label = 'Age: 18-64, Interval=10')
+                        years = np.arange(2026,2050,10),label = 'Age: 18-64, Interval=10, no vax')
 
 # orig.run()
 # strat1_1_nv.run()
@@ -507,16 +520,16 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 # %%
 
-orig_nv = make_uk_sim(rand_seed = 1, vax=False)
+orig_nv = make_uk_sim(rand_seed = 1, vax=False, label = 'no screening, no vax')
 
 strat2_1_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64], vax=False,
-                        years = np.arange(2026,2050,2), label = 'Age: 25-64, Interval=2')
+                        years = np.arange(2026,2050,2), label = 'Age: 25-64, Interval=2, no vax')
 
 strat2_2_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64],vax=False,
-                        years = np.arange(2026,2050,5),label = 'Age: 25-64, Interval=5')
+                        years = np.arange(2026,2050,5),label = 'Age: 25-64, Interval=5, no vax')
 
 strat2_3_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64],vax=False,
-                        years = np.arange(2026,2050,10),label = 'Age: 25-64, Interval=10')
+                        years = np.arange(2026,2050,10),label = 'Age: 25-64, Interval=10, no vax')
 
 
 
@@ -532,16 +545,16 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 # but also should run multiple sims and take the mean 
 # %%
     
-orig_nv = make_uk_sim(rand_seed = 1, vax=False)
+orig_nv = make_uk_sim(rand_seed = 1, vax=False, label = 'no screening, no vax')
 
 strat3_1_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100], vax=False,
-                        years = np.arange(2026,2050,2), label = 'Age: 25-100, Interval=2')
+                        years = np.arange(2026,2050,2), label = 'Age: 25-100, Interval=2, no vax')
 
 strat3_2_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100],vax=False,
-                        years = np.arange(2026,2050,5),label = 'Age: 25-100, Interval=5')
+                        years = np.arange(2026,2050,5),label = 'Age: 25-100, Interval=5, no vax')
 
 strat3_3_nv = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100],vax=False,
-                        years = np.arange(2026,2050,10),label = 'Age: 25-100, Interval=10')
+                        years = np.arange(2026,2050,10),label = 'Age: 25-100, Interval=10, no vax')
 
 
 
