@@ -14,32 +14,34 @@ import numpy as np
 sys.path.append('/Users/olivialeake/Documents/BSP project/HPV Project/hpvsim')
 
 
-from UK_screening.UK_sim_fn import make_uk_sim
+from Nigeria_screening.Nigeria_sim_fn import make_nigeria_sim
+from Nigeria_screening.screen_fun import add_screening
 
-from Nigeria_screening.screen_fn import add_screening
-# The add_screening function works for both UK and Nigeria, you must specify the location though
 
 import hpvsim as hpv
 
+# All these sims include the vaccination introduced in Oct 2|023
 
+orig = make_nigeria_sim(rand_seed = 1)
 
-# All these sims include the vaccinations introduced since 2008
-
-orig = make_uk_sim(rand_seed = 1)
-
-strat1_1 = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64], 
+strat1_1 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [18,64], 
                         years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2')
 
-strat1_2 = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64],
+strat1_2 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [18,64],
                         years = np.arange(2026,2050,5),label = 'Age: 18-64, Interval=5')
 
-strat1_3 = add_screening(location = 'uk', rand_seed = 1, age_range = [18,64],
+strat1_3 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [18,64],
                         years = np.arange(2026,2050,10),label = 'Age: 18-64, Interval=10')
 
+## They run fine individually
+# orig.run()
+# strat1_1.run()
+# strat1_2.run()
+# strat1_3.run()
 
 # Compare screening intervals for age range 18-64
 comp = hpv.MultiSim([orig, strat1_1,strat1_2,strat1_3])
-comp.run(n_runs=2)
+comp.run()
 comp_strat1 = comp.plot()
 
 
@@ -55,6 +57,7 @@ for sim in comp.sims:
 # There is a difference between strat1_1 and _2,_3 so know something has changed - tells me something probs wrong with 
 # screening or vaccination itself
 
+# They look different when they have different seeds , but I don't think I should use different seeds
 
 
 # save fig to mac. Don't forget .png !
@@ -70,15 +73,15 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 # %%
 
-orig = make_uk_sim(rand_seed = 1)
+orig = make_nigeria_sim(rand_seed = 1)
 
-strat2_1 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64], 
+strat2_1 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,64], 
                         years = np.arange(2026,2050,2), label = 'Age: 25-64, Interval=2')
 
-strat2_2 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64],
+strat2_2 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,64],
                         years = np.arange(2026,2050,5),label = 'Age: 25-64, Interval=5')
 
-strat2_3 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,64],
+strat2_3 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,64],
                         years = np.arange(2026,2050,10),label = 'Age: 25-64, Interval=10')
 
 
@@ -95,15 +98,15 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 # but also should run multiple sims and take the mean 
 # %%
     
-orig = make_uk_sim(rand_seed = 1)
+orig = make_nigeria_sim(rand_seed = 1)
 
-strat3_1 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100], 
+strat3_1 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,100], 
                         years = np.arange(2026,2050,2), label = 'Age: 25-100, Interval=2')
 
-strat3_2 = add_screening(location = 'uk', rand_seed = 1, age_range = [25,100],
+strat3_2 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,100],
                         years = np.arange(2026,2050,5),label = 'Age: 25-100, Interval=5')
 
-strat3_3 = add_screening(location = 'uk', location = 'uk', rand_seed = 1, age_range = [25,100],
+strat3_3 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,100],
                         years = np.arange(2026,2050,10),label = 'Age: 25-100, Interval=10')
 
 
@@ -125,7 +128,7 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 # Compare ages for interval 2
 comp4 = hpv.MultiSim([orig, strat1_1, strat2_1, strat3_1])
-comp4.run(n_run=5)
+comp4.run()
 comp_strat4 = comp4.plot()
 comp4.brief()
     

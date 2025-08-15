@@ -19,7 +19,6 @@ import hpvsim as hpv
 
 sim = make_uk_sim() # TODO: update using a UK sim
 
-# TODO: get it to work with interventions included
 
 # %%
 # Test with simpler sim 
@@ -72,7 +71,7 @@ calib = hpv.Calibration(
     genotype_pars=genotype_pars,
     extra_sim_result_keys=results_to_plot,
     datafiles=datafiles,
-    total_trials=10, n_workers=3
+    total_trials=2, n_workers=1
 )
 
 calib.calibrate(die=False)

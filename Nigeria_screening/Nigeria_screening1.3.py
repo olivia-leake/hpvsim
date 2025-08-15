@@ -15,7 +15,10 @@ sys.path.append('/Users/olivialeake/Documents/BSP project/HPV Project/hpvsim')
 
 
 from Nigeria_screening.Nigeria_sim_fn import make_nigeria_sim
-from Nigeria_screening.Nig_screen_fn import add_screening
+
+
+from Nigeria_screening.screen_fun import add_screening
+
 
 import hpvsim as hpv
 
@@ -23,15 +26,19 @@ import hpvsim as hpv
 
 orig = make_nigeria_sim(rand_seed = 1)
 
-strat1_1 = add_screening(rand_seed = 1, age_range = [18,64], 
+strat1_1 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [18,64], vax=False,
                         years = np.arange(2026,2050,2), label = 'Age: 18-64, Interval=2')
 
-strat1_2 = add_screening(rand_seed = 1, age_range = [18,64],
+strat1_2 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [18,64], vax=False,
                         years = np.arange(2026,2050,5),label = 'Age: 18-64, Interval=5')
 
-strat1_3 = add_screening(rand_seed = 1, age_range = [18,64],
+strat1_3 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [18,64], vax=False,
                         years = np.arange(2026,2050,10),label = 'Age: 18-64, Interval=10')
 
+orig.run()
+strat1_1.run()
+strat1_2.run()
+strat1_3.run()
 
 # Compare screening intervals for age range 18-64
 comp = hpv.MultiSim([orig, strat1_1,strat1_2,strat1_3])
@@ -68,13 +75,13 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
 
 orig = make_nigeria_sim(rand_seed = 1)
 
-strat2_1 = add_screening(rand_seed = 1, age_range = [25,64], 
+strat2_1 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,64], 
                         years = np.arange(2026,2050,2), label = 'Age: 25-64, Interval=2')
 
-strat2_2 = add_screening(rand_seed = 1, age_range = [25,64],
+strat2_2 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,64],
                         years = np.arange(2026,2050,5),label = 'Age: 25-64, Interval=5')
 
-strat2_3 = add_screening(rand_seed = 1, age_range = [25,64],
+strat2_3 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,64],
                         years = np.arange(2026,2050,10),label = 'Age: 25-64, Interval=10')
 
 
@@ -93,13 +100,13 @@ hpv.savefig('/Users/olivialeake/Documents/BSP project/HPV Project/Overleaf mater
     
 orig = make_nigeria_sim(rand_seed = 1)
 
-strat3_1 = add_screening(rand_seed = 1, age_range = [25,100], 
+strat3_1 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,100], 
                         years = np.arange(2026,2050,2), label = 'Age: 25-100, Interval=2')
 
-strat3_2 = add_screening(rand_seed = 1, age_range = [25,100],
+strat3_2 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,100],
                         years = np.arange(2026,2050,5),label = 'Age: 25-100, Interval=5')
 
-strat3_3 = add_screening(rand_seed = 1, age_range = [25,100],
+strat3_3 = add_screening(location = 'nigeria', rand_seed = 1, age_range = [25,100],
                         years = np.arange(2026,2050,10),label = 'Age: 25-100, Interval=10')
 
 
